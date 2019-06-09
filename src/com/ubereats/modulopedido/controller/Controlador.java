@@ -26,7 +26,7 @@ public class Controlador {
             String pass = new String("");//contraseña de la base de datos
             String nombreBase = new String("ubereats");//nombre de la base de datos
             String url = "jdbc:mysql://localhost:3306/" + nombreBase;
-            Class.forName("com.mysql.jdbc.Drive").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             
             conexion = DriverManager.getConnection(url, user, pass);
         }catch (SQLException sqle){
