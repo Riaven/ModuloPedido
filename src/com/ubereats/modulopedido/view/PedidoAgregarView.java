@@ -25,10 +25,11 @@ public class PedidoAgregarView extends javax.swing.JFrame {
     /** Creates new form PedidoAgregarView */
     public PedidoAgregarView() throws Exception {
         initComponents();
-        rellenarComboUsuario(cbxUsuario);
+        //rellenarComboUsuario(cbxUsuario);
         rellenarComboLocal(cbxLocal);
         rellenarComboEstado(cbxEstado);
         rellenarComboCarta(cbxCarta);
+        rellenarComboFranquicia(cbxFranquicia);
     }
 
     /** This method is called from within the constructor to
@@ -41,9 +42,7 @@ public class PedidoAgregarView extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         cbxLocal = new javax.swing.JComboBox<>();
-        cbxUsuario = new javax.swing.JComboBox<>();
         cbxEstado = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         cbxCarta = new javax.swing.JComboBox<>();
@@ -55,11 +54,7 @@ public class PedidoAgregarView extends javax.swing.JFrame {
 
         jLabel1.setText("Local");
 
-        jLabel2.setText("Usuario");
-
         cbxLocal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cbxUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -91,30 +86,20 @@ public class PedidoAgregarView extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(cbxCarta, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(130, 130, 130)
+                        .addGap(136, 136, 136)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cbxEstado, 0, 84, Short.MAX_VALUE)
-                                    .addComponent(cbxLocal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(cbxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(97, 97, 97)))))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbxEstado, 0, 84, Short.MAX_VALUE)
+                            .addComponent(cbxLocal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(137, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cbxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(90, 90, 90)
+                .addGap(129, 129, 129)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -175,7 +160,7 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         });
     }
     
-    public void rellenarComboUsuario(JComboBox cbxUsuario)throws Exception{
+    /**public void rellenarComboUsuario(JComboBox cbxUsuario)throws Exception{
         String descripcion;
         cbxUsuario.removeAllItems();//limpia el combobox
         try{
@@ -183,14 +168,14 @@ public class PedidoAgregarView extends javax.swing.JFrame {
                 /**Se le da el valor sacado desde el Array listarUsuarios
                  * a la variable descripcion, la cual recibe la variable nombre
                  * almacenada en el array y se rellena el combobox
-                 */
+                 
                 descripcion = UsuarioController.listarUsuarios().get(i).getNombre();
                 cbxUsuario.addItem(descripcion);
             }
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al cargar Usuarios" + sqle);
         }
-    }
+    }*/
     
     public void rellenarComboLocal(JComboBox cbxLocal)throws Exception{
         String descripcion;
@@ -234,14 +219,25 @@ public class PedidoAgregarView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Error rellenar ComboBox Carta : " + sqle);
         }
     }
+    
+    public void rellenarComboFranquicia(JComboBox cbxFranquicia)throws Exception{
+        String nombre;
+        cbxFranquicia.removeAllItems();
+        try{
+            for(int i = 0; i < FranquiciaController.listarFranquicias().size(); i++){
+                nombre = FranquiciaController.listarFranquicias().get(i).getNombre();
+                cbxFranquicia.addItem(nombre);
+            }
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error rellenar ComboBox Franquicia : " + sqle);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbxCarta;
     private javax.swing.JComboBox<String> cbxEstado;
     private javax.swing.JComboBox<String> cbxFranquicia;
     private javax.swing.JComboBox<String> cbxLocal;
-    private javax.swing.JComboBox<String> cbxUsuario;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

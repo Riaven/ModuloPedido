@@ -7,6 +7,7 @@ package com.ubereats.modulopedido.controller.modelcontroller;
 
 import com.ubereats.modulopedido.controller.Controlador;
 import com.ubereats.modulopedido.model.FranquiciaModel;
+import com.ubereats.modulopedido.model.LocalModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ public class FranquiciaController {
     private static ArrayList<FranquiciaModel> alFranquicia = new ArrayList<>();
     
     //metodo que busca y retorna todo lo de la tabla pedido desde la bd
-    public static ArrayList<FranquiciaModel> listarCartas()throws Exception{
+    public static ArrayList<FranquiciaModel> listarFranquicias()throws Exception{
         try{
             con = new Controlador().conectar();
             st = con.createStatement();
@@ -38,13 +39,20 @@ public class FranquiciaController {
             while(rs.next()){
                 int idFranquicia;
                 String nombre;
+                LocalModel Local = null;
                 int idLocal;
                 //se asignan los valores que devuelve rs a las variables
                 idFranquicia = rs.getInt("idFranquicia");
                 nombre = rs.getString("nombre");
                 idLocal = rs.getInt("idLocal");
+                
+                for(int i = 0; i < LocalController.listarLocales().size(); i++){
+                    if(LocalController.listarLocales().get(i).getIdLocal()==idLocal){
+                        Local = LocalController.listarLocales().get(i);
+                    }
+                }
                 //crea una instancia y la guarda en el array
-                //alFranquicia.add(new FranquiciaModel(idFranquicia, nombre, idLocal));
+                alFranquicia.add(new FranquiciaModel(idFranquicia, nombre, Local));
             }
             con.close();
         }catch(SQLException sqle){
