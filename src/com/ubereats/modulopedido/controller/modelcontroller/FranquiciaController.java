@@ -79,4 +79,25 @@ public class FranquiciaController {
         }
         return franquicia;    
     }
+    
+    public static FranquiciaModel buscarFranquiciaporNombre(String nombreFranquicia)throws Exception{
+        FranquiciaModel franquicia = null;
+        try{
+            con = new Controlador().conectar();
+            st = con.createStatement();
+            query = "SELECT * FROM franquicia WHERE nombre = '" + nombreFranquicia + "'";
+            rs = st.executeQuery(query);
+            rs.next();
+            int id = rs.getInt("idFranquicia");
+            String nombre = rs.getString("nombre");
+            int idLocal = rs.getInt("idLocal");
+            LocalModel local;
+            local =  LocalController.buscarLocalporCodigo(idLocal);
+             
+             franquicia = new FranquiciaModel(id, nombre, local);
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
+        }
+        return franquicia;    
+    }
 }

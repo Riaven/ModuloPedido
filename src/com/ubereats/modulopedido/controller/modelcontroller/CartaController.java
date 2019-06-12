@@ -87,7 +87,34 @@ public class CartaController {
              
              carta = new CartaModel(id, nombre, descripcion, franquicia, local);
         }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
+            JOptionPane.showMessageDialog(null,"Error al buscar Carta" + sqle);
+        }
+        return carta;
+    }
+    
+    public static CartaModel buscarCartaPorNombre(String nombreCarta)throws Exception{
+        CartaModel carta = null;
+        try{
+            con = new Controlador().conectar();
+            st = con.createStatement();
+            query = "SELECT * FROM carta WHERE nombre = '" + nombreCarta +"'";
+            rs = st.executeQuery(query);
+            rs.next();
+             int id = rs.getInt("idLocal");
+             String nombre = rs.getString("nombre");
+             String descripcion = rs.getString("descripcion");
+             int idFranquicia = rs.getInt("idFranquicia");
+             int idLocal = rs.getInt("idLocal");
+             
+             FranquiciaModel franquicia;
+             LocalModel local;
+             
+             franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
+             local = LocalController.buscarLocalporCodigo(idLocal);
+             
+             carta = new CartaModel(id, nombre, descripcion, franquicia, local);
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error al buscar Carta" + sqle);
         }
         return carta;
     }

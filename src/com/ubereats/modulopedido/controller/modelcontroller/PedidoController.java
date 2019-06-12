@@ -13,7 +13,9 @@ import com.ubereats.modulopedido.model.LocalModel;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Riaven
@@ -48,5 +50,25 @@ public class PedidoController {
         }
        
         return alPedido;
+    }
+    
+    //metodo para agregar nuevo pedido
+    public static int agregarPedido(int idPedido, int cantidad, EstadoModel estado, CartaModel carta, FranquiciaModel franquicia, LocalModel local)throws Exception{
+        int filaAgregada = 0;
+        try{
+            con = new Controlador().conectar();
+            st = con.createStatement();
+            query = "INSERT INTO pedido VALUES("+ idPedido + ',' +
+                                                  cantidad + ',' +
+                                                  estado.getIdEstado() + ',' +
+                                                  carta.getIdCarta() + ',' +
+                                                  franquicia.getIdFranquicia() + ',' +
+                                                  local.getIdLocal()  +')';
+            filaAgregada = st.executeUpdate(query);
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error al agregar pedido" + estado);
+        }
+        return filaAgregada;
+        
     }
 }

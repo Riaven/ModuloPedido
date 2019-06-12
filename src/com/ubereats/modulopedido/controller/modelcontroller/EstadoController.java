@@ -68,4 +68,22 @@ public class EstadoController {
         }
         return estadito;
     }
+    
+    public static EstadoModel buscarEstadoPorNombre(String nombreEstado)throws Exception{
+        EstadoModel estadito = null;
+        try{
+        con = new Controlador().conectar();
+        st = con.createStatement();
+        query = "SELECT * FROM estado WHERE descripcion = '" + nombreEstado + "'";
+        rs = st.executeQuery(query);
+        rs.next();
+        int id = rs.getInt("idEstado");
+        String descripcion = rs.getString("descripcion");
+        
+        estadito =  new EstadoModel(id, descripcion);
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error al buscar estado" + sqle);
+        }
+        return estadito;
+    }
 }
