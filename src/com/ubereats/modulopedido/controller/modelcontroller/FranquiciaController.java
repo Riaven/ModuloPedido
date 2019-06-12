@@ -46,11 +46,8 @@ public class FranquiciaController {
                 nombre = rs.getString("nombre");
                 idLocal = rs.getInt("idLocal");
                 
-                for(int i = 0; i < LocalController.listarLocales().size(); i++){
-                    if(LocalController.listarLocales().get(i).getIdLocal()==idLocal){
-                        Local = LocalController.listarLocales().get(i);
-                    }
-                }
+                Local = LocalController.buscarLocalporCodigo(idLocal);
+                
                 //crea una instancia y la guarda en el array
                 alFranquicia.add(new FranquiciaModel(idFranquicia, nombre, Local));
             }
@@ -60,5 +57,26 @@ public class FranquiciaController {
         }
         //retorna el array;
         return alFranquicia;
+    }
+    
+    public static FranquiciaModel buscarFranquiciaporCodigo(int codigoFranquicia)throws Exception{
+        FranquiciaModel franquicia = null;
+        try{
+            con = new Controlador().conectar();
+            st = con.createStatement();
+            query = "SELECT * FROM franquicia WHERE idFranquicia = " + codigoFranquicia;
+            rs = st.executeQuery(query);
+            rs.next();
+            int id = rs.getInt("idFranquicia");
+            String nombre = rs.getString("nombre");
+            int idLocal = rs.getInt("idLocal");
+            LocalModel local;
+            local =  LocalController.buscarLocalporCodigo(idLocal);
+             
+             franquicia = new FranquiciaModel(id, nombre, local);
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
+        }
+        return franquicia;    
     }
 }

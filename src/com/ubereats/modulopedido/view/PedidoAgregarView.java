@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,10 +27,14 @@ public class PedidoAgregarView extends javax.swing.JFrame {
     public PedidoAgregarView() throws Exception {
         initComponents();
         //rellenarComboUsuario(cbxUsuario);
+        
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         rellenarComboLocal(cbxLocal);
         rellenarComboEstado(cbxEstado);
-        rellenarComboCarta(cbxCarta);
         rellenarComboFranquicia(cbxFranquicia);
+        rellenarComboCarta(cbxCarta);
+       
+        
     }
 
     /** This method is called from within the constructor to
@@ -177,6 +182,12 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         }
     }*/
     
+    public String contenidoCombo(){
+        String mensaje;
+        mensaje = cbxLocal.getSelectedItem().toString();
+        return mensaje;
+    }
+    
     public void rellenarComboLocal(JComboBox cbxLocal)throws Exception{
         String descripcion;
         cbxLocal.removeAllItems();//limpia el combobox
@@ -225,6 +236,7 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         cbxFranquicia.removeAllItems();
         try{
             for(int i = 0; i < FranquiciaController.listarFranquicias().size(); i++){
+                
                 nombre = FranquiciaController.listarFranquicias().get(i).getNombre();
                 cbxFranquicia.addItem(nombre);
             }

@@ -53,4 +53,25 @@ public class LocalController{
         //retorna el arrayList de tipo local
         return alLocal;
     }  
+    public static LocalModel buscarLocalporCodigo(int codigoLocal)throws Exception{
+        LocalModel local = null;
+        try{
+            con = new Controlador().conectar();
+            st = con.createStatement();
+            query = "SELECT * FROM local WHERE idLocal = " + codigoLocal;
+            rs = st.executeQuery(query);
+            rs.next();
+             int id = rs.getInt("idLocal");
+             String menu = rs.getString("menu");
+             String direccion = rs.getString("direccion");
+             String telefono = rs.getString("telefono");
+             String correo = rs.getString("correo");
+             String horario = rs.getString("horario");
+             
+             local = new LocalModel(id,menu,direccion,telefono,correo,horario);
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
+        }
+        return local;    
+    }
 }

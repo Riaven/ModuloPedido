@@ -52,17 +52,9 @@ public class CartaController {
                 idFranquicia = rs.getInt("idFranquicia");
                 idLocal = rs.getInt("idLocal");
                 //obtener Franquicia
-                for(int i = 0; i < FranquiciaController.listarFranquicias().size(); i++){
-                    if(FranquiciaController.listarFranquicias().get(i).getIdFranquicia() == idFranquicia){
-                        franquicia = FranquiciaController.listarFranquicias().get(i);
-                    }
-                }
+                franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
                 //para obtener Local
-                for(int i = 0; i < LocalController.listarLocales().size(); i++){
-                    if(LocalController.listarLocales().get(i).getIdLocal() == idLocal){
-                        local = LocalController.listarLocales().get(i);
-                    }
-                }
+                local = LocalController.buscarLocalporCodigo(idLocal);
                 //rellenar el array de carta
                 alCarta.add(new CartaModel(idCarta, nombre, descripcion, franquicia, local));
             }
