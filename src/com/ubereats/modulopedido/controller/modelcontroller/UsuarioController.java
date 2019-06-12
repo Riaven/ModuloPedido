@@ -43,6 +43,7 @@ public class UsuarioController {
                  //se rellena el array con lo devuelto por rs
                  alUsuario.add(new UsuarioModel(idUsuario, correo, telefono, contrasenia, nombre, apellido));
             }
+            con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error SQL : " + sqle);
         }

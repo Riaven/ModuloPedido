@@ -45,6 +45,7 @@ public class LocalController{
                 //se añade un nueva instancia cada vez que devuelva resultados rs        
                 alLocal.add(new LocalModel(id, menu, direccion, telefono, correo, horario));
             }
+            con.close();
         }catch(SQLException sqle){
             //Atrapa el error y lo muestra como mensaje al usuario
             JOptionPane.showMessageDialog(null, "Error SQL : " + sqle);
