@@ -182,11 +182,6 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         }
     }*/
     
-    public String contenidoCombo(){
-        String mensaje;
-        mensaje = cbxLocal.getSelectedItem().toString();
-        return mensaje;
-    }
     
     public void rellenarComboLocal(JComboBox cbxLocal)throws Exception{
         String descripcion;
@@ -233,8 +228,10 @@ public class PedidoAgregarView extends javax.swing.JFrame {
     
     public void rellenarComboFranquicia(JComboBox cbxFranquicia)throws Exception{
         String nombre;
+        
         cbxFranquicia.removeAllItems();
         try{
+           
             for(int i = 0; i < FranquiciaController.listarFranquicias().size(); i++){
                 
                 nombre = FranquiciaController.listarFranquicias().get(i).getNombre();

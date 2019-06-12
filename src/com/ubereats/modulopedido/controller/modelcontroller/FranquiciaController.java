@@ -31,7 +31,7 @@ public class FranquiciaController {
         try{
             con = new Controlador().conectar();
             st = con.createStatement();
-            query = "SELECT * FROM franquicia";
+            query = "SELECT * FROM franquicia ";
             rs = st.executeQuery(query);
             //Limpiar el array
             alFranquicia.removeAll(alFranquicia);
