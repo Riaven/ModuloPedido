@@ -73,7 +73,8 @@ public class FranquiciaController {
             LocalModel local;
             local =  LocalController.buscarLocalporCodigo(idLocal);
              
-             franquicia = new FranquiciaModel(id, nombre, local);
+            franquicia = new FranquiciaModel(id, nombre, local);
+            con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
         }
@@ -94,7 +95,8 @@ public class FranquiciaController {
             LocalModel local;
             local =  LocalController.buscarLocalporCodigo(idLocal);
              
-             franquicia = new FranquiciaModel(id, nombre, local);
+            franquicia = new FranquiciaModel(id, nombre, local);
+            con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
         }

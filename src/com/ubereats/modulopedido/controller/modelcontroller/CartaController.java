@@ -86,6 +86,7 @@ public class CartaController {
              local = LocalController.buscarLocalporCodigo(idLocal);
              
              carta = new CartaModel(id, nombre, descripcion, franquicia, local);
+             con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar Carta" + sqle);
         }
@@ -113,6 +114,7 @@ public class CartaController {
              local = LocalController.buscarLocalporCodigo(idLocal);
              
              carta = new CartaModel(id, nombre, descripcion, franquicia, local);
+             con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar Carta" + sqle);
         }

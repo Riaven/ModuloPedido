@@ -7,12 +7,14 @@
             <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/view/PedidoPrincipalView.java</file>
             <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/CartaController.java</file>
             <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/Controlador.java</file>
-            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/model/PedidoModel.java</file>
-            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/PedidoController.java</file>
             <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/model/EstadoModel.java</file>
-            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/EstadoController.java</file>
             <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/FranquiciaController.java</file>
             <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/model/CartaModel.java</file>
+            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/ModuloPedido.java</file>
+            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/UsuarioController.java</file>
+            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/model/PedidoModel.java</file>
+            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/PedidoController.java</file>
+            <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/EstadoController.java</file>
             <file>file:/C:/Users/jogub/Documents/NetBeansProjects/ModuloPedido/src/com/ubereats/modulopedido/controller/modelcontroller/LocalController.java</file>
         </group>
     </open-files>

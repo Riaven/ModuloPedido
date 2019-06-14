@@ -69,6 +69,7 @@ public class LocalController{
              String horario = rs.getString("horario");
              
              local = new LocalModel(id,menu,direccion,telefono,correo,horario);
+             con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
         }
@@ -91,6 +92,7 @@ public class LocalController{
              String horario = rs.getString("horario");
              
              local = new LocalModel(id,menu,direccion,telefono,correo,horario);
+             con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
         }

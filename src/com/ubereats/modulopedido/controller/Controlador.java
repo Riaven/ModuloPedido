@@ -44,6 +44,7 @@ public class Controlador {
             if(conexion != null){
                 //Si es así cierra la conexión
                 conexion.close();
+                System.out.println("Se ha cerrado la conexión con la Base de Datos ");
             }
         }catch(SQLException sqle){
             //Muestra al usuario error de desconexión

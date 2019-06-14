@@ -63,6 +63,7 @@ public class EstadoController {
         String descripcion = rs.getString("descripcion");
         
         estadito =  new EstadoModel(id, descripcion);
+        con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar estado" + sqle);
         }
@@ -81,6 +82,7 @@ public class EstadoController {
         String descripcion = rs.getString("descripcion");
         
         estadito =  new EstadoModel(id, descripcion);
+        con.close();
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar estado" + sqle);
         }
