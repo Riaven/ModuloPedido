@@ -50,8 +50,9 @@ public class EstadoController {
         //retorna el array;
         return alEstado;
     }
-    
+    //busca un Estado en la base de datos por su id
     public static EstadoModel buscarEstadoPorId(int idEstado)throws Exception{
+        //Se crea un objeto de tipo de EstadoModel
         EstadoModel estadito = null;
         try{
         con = new Controlador().conectar();
@@ -67,9 +68,10 @@ public class EstadoController {
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar estado" + sqle);
         }
+        //retorna un objeto ya instanciado de estadoModel
         return estadito;
     }
-    
+    //Método que busca un estado en la base de datos para devolver un Objeto de tipo EstadoModel
     public static EstadoModel buscarEstadoPorNombre(String nombreEstado)throws Exception{
         EstadoModel estadito = null;
         try{
@@ -86,6 +88,7 @@ public class EstadoController {
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar estado" + sqle);
         }
+        //retorna el objeto ya instanciado de EstadoModel
         return estadito;
     }
 }

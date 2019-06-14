@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Toolkit;
 
 
 /**
@@ -33,7 +34,8 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         this.setTitle("Mantenimiento Pedido");
         //y se rellena la Tabla
         llenarJTablePedido(jtPedido);
-        
+        //no permite que la tabla sea editable por el usuario
+        jtPedido.setDefaultEditor(Object.class, null);
     }
 
     /**
@@ -61,7 +63,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Pedido");
+        jLabel1.setText("Mantenedor Pedido");
 
         jButton1.setText("Buscar");
 
@@ -73,6 +75,11 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnModificar.setText("Modificar");
 
@@ -105,37 +112,36 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(412, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jtxBuscarId, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(310, 310, 310)
-                        .addComponent(jLabel1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2)
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(49, 49, 49))
+                                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(275, 275, 275))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel1)
-                .addGap(35, 35, 35)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxBuscarId, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -149,11 +155,11 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(124, Short.MAX_VALUE))
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         pack();
@@ -166,7 +172,10 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             ventanaNuevo = new PedidoAgregarView();
             ventanaNuevo.setVisible(true);
             ventanaNuevo.setTitle("Nuevo Pedido");
+            int ancho = Toolkit.getDefaultToolkit().getScreenSize().width;
+            int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
             
+            ventanaNuevo.setLocation((ancho / 2) - (ventanaNuevo.getWidth() / 2), (alto / 2) - (ventanaNuevo.getHeight()/ 2));
         } catch (Exception ex) {
             Logger.getLogger(PedidoPrincipalView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -180,11 +189,21 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             modelo.setRowCount(0);
             modelo.setColumnCount(0);
             llenarJTablePedido(jtPedido);
+           
         }catch(Exception e){
             JOptionPane.showMessageDialog(null , "Error : " + e);
         }
         
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        try{
+        obtenerIdFilaSeleccionada(jtPedido);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null , "Error : " + e);
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,7 +246,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     
     public void llenarJTablePedido(JTable jtPedido)throws Exception{
         try{
-            
+            //Se crea un array para llenar las columnas de la tabla
             ArrayList<Object> nombreColumna = new ArrayList<>();
             nombreColumna.removeAll(nombreColumna);
             nombreColumna.add("ID");
@@ -236,26 +255,20 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             nombreColumna.add("Carta");
             nombreColumna.add("Franquicia");
             nombreColumna.add("Local");
-            
+            //se rellena con cada una de las columnas al array
             for(Object columna : nombreColumna){
                 modelo.addColumn(columna);
             }
-            
-            for(int i = 0; i< modelo.getRowCount(); i++){
-                modelo.removeRow(i);
-            }
-        
-            
+            //Se rellena con el array de listar pedidos         
             for(PedidoModel DatoPedido : PedidoController.listarPedidos()){
                 modelo.addRow(new Object[]{DatoPedido.getIdPedido(),
                                            DatoPedido.getCantidad(),
                                            DatoPedido.getEstado().getDescripcion(),
                                            DatoPedido.getCarta().getNombre(),
                                            DatoPedido.getFranquicia().getNombre(),
-                                           DatoPedido.getLocal().getMenu()});
-            
+                                           DatoPedido.getLocal().getMenu()}); 
             }
-            
+            //se actualiza la Tabla
             jtPedido.setModel(modelo);
             //modelo.fireTableDataChanged();
         }catch(SQLException sqle){
@@ -266,10 +279,20 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     public void obtenerIdFilaSeleccionada(JTable jtPedido)throws Exception{
         int fila;
         int id;
+        //recibe un 1 si se acepta o 0 si es que no
+        int mensaje;
         fila = jtPedido.getSelectedRow();
-        id = Integer.parseInt(jtPedido.getValueAt(fila, 1).toString());
-        
-        JOptionPane.showMessageDialog(null,"El id de la fila = " + fila + "es :" + id);
+        //obtiene el id que tiene la fila de la tabla
+        id = Integer.parseInt(jtPedido.getValueAt(fila, 0).toString());
+        try{
+            mensaje = JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el Pedido id = " + id, "Eliminar pedido " + id , JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(mensaje == JOptionPane.YES_OPTION){
+                PedidoController.eliminarPedido(id);
+            }
+        }catch(SQLException sqle){
+            JOptionPane.showMessageDialog(null,"Error llevar JTable" + sqle);
+        }
+        //JOptionPane.showMessageDialog(null,"El id de la fila = " + fila + " es : " + id);
     }
     
 

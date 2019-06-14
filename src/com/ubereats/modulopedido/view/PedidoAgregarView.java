@@ -249,28 +249,39 @@ public class PedidoAgregarView extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
+        int exito = 0;
         int idPedido = 0;
         String nombreEstado;
         //se recoge el item seleccionado del pedido
         nombreEstado = cbxEstado.getSelectedItem().toString();
         idPedido = Integer.parseInt(jtfIdPedido.getText());
         try{
-            PedidoController.modificarEstadoPedido(nombreEstado, idPedido);
+           exito = PedidoController.modificarEstadoPedido(nombreEstado, idPedido);
             
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "No se ha podido Modificar el pedido" + e);
         }
-        
+        if(exito == 1){
+            JOptionPane.showMessageDialog(null, "Pedido modificado correctamente");
+        }else{
+            JOptionPane.showMessageDialog(null, "No se ha podido modificar el Pedido");
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
+        int exito = 0;
         int idPedido;
         idPedido = Integer.parseInt(jtfIdPedido.getText());
         try{
-            PedidoController.eliminarPedido(idPedido);
+            exito = PedidoController.eliminarPedido(idPedido);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "No se ha podido Modificar el pedido" + e);
+        }
+        if(exito == 1){
+            JOptionPane.showMessageDialog(null, "Pedido eliminado correctamente");
+        }else{
+            JOptionPane.showMessageDialog(null, "No se ha podido eliminar el Pedido");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
