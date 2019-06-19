@@ -109,7 +109,7 @@ public class PedidoController {
         }else{
             JOptionPane.showMessageDialog(null,"Pedido no existe, no se puede eliminar");
         }
-        
+        //retorna la cantidad de filas que fueron eliminadas
         return eliminado;
     }
     //Método para buscar un pedido en específico con su id

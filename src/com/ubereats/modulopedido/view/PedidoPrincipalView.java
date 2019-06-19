@@ -34,7 +34,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         this.setTitle("Mantenimiento Pedido");
         //y se rellena la Tabla
         llenarJTablePedido(jtPedido);
-        //no permite que la tabla sea editable por el usuario
+        //no permite que ninguna de las filas o clumnas de la tabla sea editable por el usuario
         jtPedido.setDefaultEditor(Object.class, null);
     }
 
@@ -82,6 +82,11 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         });
 
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -198,12 +203,41 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
+        int id;
+        int eliminado;
+        int mensaje;
+        id =  obtenerIdFilaSeleccionada(jtPedido);
         try{
-        obtenerIdFilaSeleccionada(jtPedido);
+            mensaje = JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el Pedido id = " + id, "Eliminar pedido " + id , JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(mensaje == JOptionPane.YES_OPTION){
+                
+                eliminado = PedidoController.eliminarPedido(id);
+                if(eliminado == 1){
+                    JOptionPane.showMessageDialog(null , "Pedido " + id + " eliminado correctamente");
+                }else{
+                    JOptionPane.showMessageDialog(null , "Error al eliminar pedido");
+                }
+            }
+            
         }catch(Exception e){
             JOptionPane.showMessageDialog(null , "Error : " + e);
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        int id;
+        
+        try{
+            
+            //id = obtenerIdFilaSeleccionada(jtPedido);
+            //modi.obtenerId(id);
+            
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null , "Error al modificar : " + e);
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -276,23 +310,19 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         }
     }
     //Metodo para que saber la fila seleccionada de la Tabla
-    public void obtenerIdFilaSeleccionada(JTable jtPedido)throws Exception{
+    public int obtenerIdFilaSeleccionada(JTable jtPedido){
         int fila;
         int id;
-        //recibe un 1 si se acepta o 0 si es que no
-        int mensaje;
+        //se inicializa el id en 0 por si lo se rellena
+        id = 0;        
         fila = jtPedido.getSelectedRow();
         //obtiene el id que tiene la fila de la tabla
-        id = Integer.parseInt(jtPedido.getValueAt(fila, 0).toString());
-        try{
-            mensaje = JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el Pedido id = " + id, "Eliminar pedido " + id , JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(mensaje == JOptionPane.YES_OPTION){
-                PedidoController.eliminarPedido(id);
-            }
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error llevar JTable" + sqle);
+        if(fila>=0){
+                id = Integer.parseInt(jtPedido.getValueAt(fila, 0).toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "Debes de seleccionar una fila ");
         }
-        //JOptionPane.showMessageDialog(null,"El id de la fila = " + fila + " es : " + id);
+       return id;
     }
     
 
