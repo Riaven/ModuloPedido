@@ -229,9 +229,17 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         int id;
         
         try{
+            id = obtenerIdFilaSeleccionada(jtPedido);
+            if(id>0){
+                PedidoModel p = PedidoController.buscarPedidoPorID(id);
+                PedidoModificarView modi = new PedidoModificarView();
+                
+                modi.obtenerPedido(p);
+                modi.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "No se puede modificar, pedido no seleccionado");
+            }
             
-            //id = obtenerIdFilaSeleccionada(jtPedido);
-            //modi.obtenerId(id);
             
             
         }catch(Exception e){
