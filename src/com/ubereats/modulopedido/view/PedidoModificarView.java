@@ -6,13 +6,13 @@
 package com.ubereats.modulopedido.view;
 import com.ubereats.modulopedido.controller.modelcontroller.EstadoController;
 import com.ubereats.modulopedido.controller.modelcontroller.PedidoController;
-import com.ubereats.modulopedido.model.EstadoModel;
 import com.ubereats.modulopedido.model.PedidoModel;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,7 +31,10 @@ public class PedidoModificarView extends javax.swing.JFrame {
         initComponents();
         this.setLocation((ancho / 2) - (this.getWidth() / 2), (alto / 2) - (this.getHeight()/ 2));
         rellenarComboEstado(cbxEstado);
-        
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        cbxCarta.removeAllItems();
+        cbxFranquicia.removeAllItems();
+        cbxLocal.removeAllItems();
         jtfIdPedido.setEnabled(false);
         jtfCantidad.setEnabled(false);
         cbxCarta.setEnabled(false);
@@ -90,6 +93,11 @@ public class PedidoModificarView extends javax.swing.JFrame {
         jLabel5.setText("Franquicia");
 
         jButton1.setText("Modificar Pedido");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -183,6 +191,34 @@ public class PedidoModificarView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int id;
+        String nombreEstado;
+        int modificado;
+        id = 0;
+        nombreEstado = "";
+        modificado = 0;
+        id = Integer.parseInt(jtfIdPedido.getText());
+        nombreEstado = cbxEstado.getSelectedItem().toString();
+        try{
+            if(PedidoController.buscarPedidoPorID(id) != null){
+                modificado = PedidoController.modificarEstadoPedido(nombreEstado, id);
+                if(modificado == 1){
+                    JOptionPane.showMessageDialog(null, "Pedido "+ id +" modificado");
+                    dispose();  
+                }else{
+                    JOptionPane.showMessageDialog(null, "Pedido no modificado");
+                }
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "Pedido a modificar no encontrado");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al encontrar pedido a modificar");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -223,11 +259,17 @@ public class PedidoModificarView extends javax.swing.JFrame {
     }
     
     public void obtenerPedido(PedidoModel pedido)throws Exception{
+        //cargar datos del pedido
         jtfIdPedido.setText(Integer.toString(pedido.getIdPedido()));
         jtfCantidad.setText(Integer.toString(pedido.getCantidad()));
         //Para cargar el estado que tiene el pedido
-        EstadoModel es = pedido.getEstado();
-        cbxEstado.setSelectedItem(es.getDescripcion());
+        cbxEstado.setSelectedItem(pedido.getEstado().getDescripcion());
+        //cargar carta
+        cbxCarta.addItem(pedido.getCarta().getNombre());
+        //cargar franquicia
+        cbxFranquicia.addItem(pedido.getFranquicia().getNombre());
+        //cargar local
+        cbxLocal.addItem(pedido.getLocal().getMenu());
     }
     
     
@@ -246,7 +288,6 @@ public class PedidoModificarView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModificarPedido;
     private javax.swing.JComboBox<String> cbxCarta;
     private javax.swing.JComboBox<String> cbxEstado;
     private javax.swing.JComboBox<String> cbxFranquicia;
