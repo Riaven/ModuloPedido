@@ -83,6 +83,11 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         jLabel1.setText("Mantenedor Pedido");
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -227,20 +232,10 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         int id;
-        int eliminado;
-        int mensaje;
+        
         id =  obtenerIdFilaSeleccionada(jtPedido);
         try{
-            mensaje = JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el Pedido id = " + id, "Eliminar pedido " + id , JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(mensaje == JOptionPane.YES_OPTION){
-                
-                eliminado = PedidoController.eliminarPedido(id);
-                if(eliminado == 1){
-                    JOptionPane.showMessageDialog(null , "Pedido " + id + " eliminado correctamente");
-                }else{
-                    JOptionPane.showMessageDialog(null , "Error al eliminar pedido");
-                }
-            }
+           abrirEliminar(id);
             
         }catch(Exception e){
             JOptionPane.showMessageDialog(null , "Error : " + e);
@@ -250,25 +245,34 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         int id;
-        
+        id = obtenerIdFilaSeleccionada(jtPedido);
         try{
-            id = obtenerIdFilaSeleccionada(jtPedido);
-            if(id>0){
-                PedidoModel p = PedidoController.buscarPedidoPorID(id);
-                PedidoModificarView modi = new PedidoModificarView();
-                
-                modi.obtenerPedido(p);
-                modi.setVisible(true);
-            }else{
-                JOptionPane.showMessageDialog(null, "No se puede modificar, pedido no seleccionado");
-            }
-            
-            
-            
+           abrirModificar(id); 
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null , "Error al modificar : " + e);
+           JOptionPane.showMessageDialog(null , "Error : " + e);
         }
+        
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        int idPedido;
+        int opcion;
+        idPedido = Integer.parseInt(jtxBuscarId.getText());
+        try{
+            opcion =  JOptionPane.showOptionDialog(null, "Seleccione opcion", 
+                                                   "Selector de opciones",
+                                                   JOptionPane.YES_NO_CANCEL_OPTION,
+                                                   JOptionPane.QUESTION_MESSAGE,
+                                                   null,    // null para icono por defecto.
+                                                   new Object[] { "Modificar", "Eliminar", "Cancelar" },   // null para YES, NO y CANCEL
+                                                   "Modificar");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null , "Error : " + e);
+        }
+        
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -356,7 +360,45 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
        return id;
     }
     
-
+    public void abrirModificar(int id)throws Exception{
+        try{
+            
+            if(id>0){
+                PedidoModel p = PedidoController.buscarPedidoPorID(id);
+                PedidoModificarView modi = new PedidoModificarView();
+                
+                modi.obtenerPedido(p);
+                modi.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "No se puede modificar, pedido no seleccionado");
+            }
+            
+            
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null , "Error al modificar : " + e);
+        }
+    }
+    
+    public void abrirEliminar(int id)throws Exception{
+        int eliminado;
+        int mensaje;
+         try{
+            mensaje = JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar el Pedido id = " + id, "Eliminar pedido " + id , JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(mensaje == JOptionPane.YES_OPTION){
+                
+                eliminado = PedidoController.eliminarPedido(id);
+                if(eliminado == 1){
+                    JOptionPane.showMessageDialog(null , "Pedido " + id + " eliminado correctamente");
+                }else{
+                    JOptionPane.showMessageDialog(null , "Error al eliminar pedido");
+                }
+            }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null , "Error : " + e);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
