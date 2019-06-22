@@ -83,7 +83,7 @@ public class PedidoController {
             //se cierra la base de datos
             con.close();
         }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al agregar pedido" + sqle);
+            JOptionPane.showMessageDialog(null,"Error al agregar pedido " + sqle);
         }
         //se devuelve el total de filas agregadas
         return filaAgregada;
@@ -104,7 +104,7 @@ public class PedidoController {
                 //la variable encapsulada eliminado capta las filas eliminadas
                 eliminado = st.executeUpdate(query);
             }catch(SQLException sqle){
-                JOptionPane.showMessageDialog(null,"Error al eliminar pedido" + sqle);
+                JOptionPane.showMessageDialog(null,"Error al eliminar pedido " + sqle);
             }
         }else{
             JOptionPane.showMessageDialog(null,"Pedido no existe, no se puede eliminar");
@@ -139,7 +139,7 @@ public class PedidoController {
             //se crea una nueva instancia al objeto pedido
             pedido = new PedidoModel(idP, cantidad, estado, carta, franquicia, local);
         }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al buscar pedido" + sqle);
+            JOptionPane.showMessageDialog(null,"Error al buscar pedido " + sqle);
         }
         return pedido;
     }
@@ -164,7 +164,7 @@ public class PedidoController {
                     " WHERE idPedido = " + idPedido;
                 modificado = st.executeUpdate(query);
             }catch(SQLException sqle){
-                JOptionPane.showMessageDialog(null,"Error al modificar pedido" + sqle);
+                JOptionPane.showMessageDialog(null,"Error al modificar pedido " + sqle);
             }
         }else{
             // si no existe el pedido dentro de la base de datos se notifica con un msj

@@ -258,15 +258,37 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         // TODO add your handling code here:
         int idPedido;
         int opcion;
-        idPedido = Integer.parseInt(jtxBuscarId.getText());
+        
+        PedidoModel pedido;
+        pedido = null;
         try{
-            opcion =  JOptionPane.showOptionDialog(null, "Seleccione opcion", 
-                                                   "Selector de opciones",
-                                                   JOptionPane.YES_NO_CANCEL_OPTION,
-                                                   JOptionPane.QUESTION_MESSAGE,
-                                                   null,    // null para icono por defecto.
-                                                   new Object[] { "Modificar", "Eliminar", "Cancelar" },   // null para YES, NO y CANCEL
-                                                   "Modificar");
+            if(!jtxBuscarId.getText().isEmpty()){
+                idPedido = Integer.parseInt(jtxBuscarId.getText());
+                pedido = PedidoController.buscarPedidoPorID(idPedido);
+                if(pedido != null ){
+                    opcion =  JOptionPane.showOptionDialog(null, "¿Qué desea hacer con el pedido " + idPedido + '?', 
+                                                           "Pedido " + idPedido ,
+                                                           JOptionPane.YES_NO_CANCEL_OPTION,
+                                                           JOptionPane.QUESTION_MESSAGE,
+                                                           null,    // null para icono por defecto.
+                                                           new Object[] { "Modificar", "Eliminar", "Cancelar" },   // null para YES, NO y CANCEL
+                                                           "Modificar");
+                    switch(opcion){
+                        case 0: abrirModificar(idPedido);
+                                break;
+                        case 1: abrirEliminar(idPedido);
+                                break;
+                        case 2: dispose();
+                                break;
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null , "El pedido " + idPedido + " no existe." );
+                }
+            }else{
+                JOptionPane.showMessageDialog(null , "Por favor, inserte un id a buscar.");
+            }
+            
+            
         }catch(Exception e){
             JOptionPane.showMessageDialog(null , "Error : " + e);
         }
