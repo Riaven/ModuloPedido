@@ -213,6 +213,7 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         //comprueba que el pedido fuera exitosamente agregado a la bd
         if(exito == 1){
             JOptionPane.showMessageDialog(null, "Pedido agregado correctamente");
+            dispose();
         }else{
             JOptionPane.showMessageDialog(null, "No se ha podido agregar el Pedido");
         }
