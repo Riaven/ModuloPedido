@@ -199,13 +199,18 @@ public class PedidoAgregarView extends javax.swing.JFrame {
             int idPedido = Integer.parseInt(jtfIdPedido.getText());
             int cantidad = Integer.parseInt(jtfCantidad.getText());
             try {
-                //se busca por el nombre del combo seleccionado y se crea un objeto de cada uno
-                EstadoModel estadito = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString());
-                CartaModel cartita = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString());
-                FranquiciaModel franquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString());
-                LocalModel localcito = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString());
-                //se llama al metodo agregar pedido y se le otorga el int que devuelve a la variable exito
-                exito = PedidoController.agregarPedido(idPedido, cantidad, estadito, cartita, franquicia, localcito);
+                if(PedidoController.buscarPedidoPorID(idPedido) == null){
+                    //se busca por el nombre del combo seleccionado y se crea un objeto de cada uno
+                    EstadoModel estadito = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString());
+                    CartaModel cartita = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString());
+                    FranquiciaModel franquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString());
+                    LocalModel localcito = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString());
+                    //se llama al metodo agregar pedido y se le otorga el int que devuelve a la variable exito
+                    exito = PedidoController.agregarPedido(idPedido, cantidad, estadito, cartita, franquicia, localcito);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Id de pedido existe");
+                }
+                
             } catch (Exception ex) {
                 Logger.getLogger(PedidoAgregarView.class.getName()).log(Level.SEVERE, null, ex);
             }

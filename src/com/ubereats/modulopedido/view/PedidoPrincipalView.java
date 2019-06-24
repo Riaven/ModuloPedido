@@ -63,7 +63,6 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        grupoBuscar = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -209,6 +208,8 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             int alto = Toolkit.getDefaultToolkit().getScreenSize().height;
             
             ventanaNuevo.setLocation((ancho / 2) - (ventanaNuevo.getWidth() / 2), (alto / 2) - (ventanaNuevo.getHeight()/ 2));
+            
+            
         } catch (Exception ex) {
             Logger.getLogger(PedidoPrincipalView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -278,9 +279,10 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
                                 break;
                         case 1: abrirEliminar(idPedido);
                                 break;
-                        case 2: dispose();
-                                break;
+                        case 2: break;
                     }
+                    
+                    
                 }else{
                     JOptionPane.showMessageDialog(null , "El pedido " + idPedido + " no existe." );
                 }
@@ -288,7 +290,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null , "Por favor, inserte un id a buscar.");
             }
             
-            
+            jtxBuscarId.setText("");
         }catch(Exception e){
             JOptionPane.showMessageDialog(null , "Error : " + e);
         }
@@ -427,7 +429,6 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.ButtonGroup grupoBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
