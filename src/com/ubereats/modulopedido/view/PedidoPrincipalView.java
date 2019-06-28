@@ -237,6 +237,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             modelo.setRowCount(0);
             modelo.setColumnCount(0);
             llenarJTablePedido(jtPedido);
+            rellenarLabel(lblContar);
            
         }catch(Exception e){
             JOptionPane.showMessageDialog(null , "Error : " + e);
@@ -441,7 +442,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     public void rellenarLabel(JLabel lblContar){
         ModuloREST rest = new ModuloREST();
         
-        lblContar.setText(rest.countREST());
+        lblContar.setText("Total de pedidos : " + rest.countREST());
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
