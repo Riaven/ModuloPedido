@@ -7,7 +7,7 @@ package com.ubereats.modulopedido.view;
 
 import com.ubereats.modulopedido.controller.modelcontroller.PedidoController;
 import com.ubereats.modulopedido.model.PedidoModel;
-import com.ubereats.modulopedido.controller.ModuloREST;
+import com.ubereats.modulopedido.controller.PedidoREST;
 import java.awt.Image;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -440,9 +440,8 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     }
     
     public void rellenarLabel(JLabel lblContar){
-        ModuloREST rest = new ModuloREST();
-        
-        lblContar.setText("Total de pedidos : " + rest.countREST());
+
+        lblContar.setText("Total de pedidos : " + PedidoController.contarPedidos());
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;

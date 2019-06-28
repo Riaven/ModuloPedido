@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.ubereats.modulopedido.controller.modelcontroller;
+import com.ubereats.modulopedido.controller.PedidoREST;
 import com.ubereats.modulopedido.model.PedidoModel;
 import com.ubereats.modulopedido.controller.Controlador;
 import com.ubereats.modulopedido.model.CartaModel;
@@ -21,6 +22,7 @@ import javax.swing.JOptionPane;
  * @author Riaven
  */
 public class PedidoController {
+    private static PedidoREST pedidoRest = new PedidoREST();
     private static Connection con = null;
     private static Statement st;
     private static ResultSet rs;
@@ -171,5 +173,14 @@ public class PedidoController {
             JOptionPane.showMessageDialog(null,"No se puede modificar, el pedido no existe");
         }
         return modificado;
+    }
+    
+    //Metodo para contar pedidos
+    public static String contarPedidos(){
+        String totalPedidos;
+        totalPedidos = "0";
+        totalPedidos = pedidoRest.countREST();
+        
+        return totalPedidos;
     }
 }
