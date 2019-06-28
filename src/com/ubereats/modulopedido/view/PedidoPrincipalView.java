@@ -7,6 +7,7 @@ package com.ubereats.modulopedido.view;
 
 import com.ubereats.modulopedido.controller.modelcontroller.PedidoController;
 import com.ubereats.modulopedido.model.PedidoModel;
+import com.ubereats.modulopedido.controller.ModuloREST;
 import java.awt.Image;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 
 /**
@@ -51,6 +53,8 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         btnModificar.setIcon(new ImageIcon(ruta + "icons8-editar-propiedad-26.png"));
         btnBuscar.setIcon(new ImageIcon(ruta + "icons8-búsqueda-de-propiedad-26.png"));
         jlLogo.setIcon(new ImageIcon(ruta + "ubereats-logo.png"));
+        //contar los pedidos totales que hay
+        rellenarLabel(lblContar);
         
     }
 
@@ -75,6 +79,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jtPedido = new javax.swing.JTable();
         jlLogo = new javax.swing.JLabel();
+        lblContar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,18 +136,14 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jtPedido);
 
+        lblContar.setText("Contador de pedido");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jlLogo)
-                .addGap(112, 112, 112)
-                .addComponent(jLabel1)
-                .addContainerGap(461, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -161,6 +162,17 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
                                 .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(68, 68, 68))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jlLogo)
+                        .addGap(112, 112, 112)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(lblContar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,7 +203,9 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
                         .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lblContar)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         pack();
@@ -423,6 +437,12 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null , "Error : " + e);
         }
     }
+    
+    public void rellenarLabel(JLabel lblContar){
+        ModuloREST rest = new ModuloREST();
+        
+        lblContar.setText(rest.countREST());
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
@@ -436,5 +456,6 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     private javax.swing.JLabel jlLogo;
     private javax.swing.JTable jtPedido;
     private javax.swing.JTextField jtxBuscarId;
+    private javax.swing.JLabel lblContar;
     // End of variables declaration//GEN-END:variables
 }
