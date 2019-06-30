@@ -308,8 +308,8 @@ public class PedidoAgregarView extends javax.swing.JFrame {
                 descripcion = EstadoController.listarEstados().get(i).getDescripcion();
                 cbxEstado.addItem(descripcion);        
             }
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error rellenar ComboBox Estado : " + sqle);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error rellenar ComboBox Estado : " + e);
         }
     }
      //método que rellena el comboBox Carta

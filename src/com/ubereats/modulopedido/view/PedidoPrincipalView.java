@@ -56,7 +56,11 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         jlLogo.setIcon(new ImageIcon(ruta + "ubereats-logo.png"));
         //contar los pedidos totales que hay
         rellenarLabel(lblContar);
-        probandoRest();
+        for(int i = 0; i<EstadoController.listarEstados().size(); i++){
+             System.out.println(EstadoController.listarEstados().get(i).getIdEstado());
+             System.out.println(EstadoController.listarEstados().get(i).getDescripcion());
+        }
+       
     }
 
     /**
@@ -444,11 +448,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
 
         lblContar.setText("Total de pedidos : " + PedidoController.contarPedidos());
     }
-    
-    
-    public void probandoRest(){
-        System.out.println(EstadoController.prueba());
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;

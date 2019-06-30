@@ -8,7 +8,6 @@ import com.ubereats.modulopedido.controller.EstadoREST;
 import com.ubereats.modulopedido.model.EstadoModel;
 import com.ubereats.modulopedido.controller.Controlador;
 import com.ubereats.modulopedido.entities.Estado;
-import java.util.List;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -18,9 +17,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.swing.JOptionPane;
-import javax.ws.rs.core.GenericType;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.glassfish.jersey.client.ClientResponse;
+
 
 
 
@@ -36,32 +33,39 @@ public class EstadoController {
     private static Statement st;
     private static ResultSet rs;
     private static String query;
-    private static ArrayList<EstadoModel> alEstado = new ArrayList<>();
+    private static ArrayList<Estado> alEstado = new ArrayList<>();
     
     //metodo que busca y retorna todo lo de la tabla pedido desde la bd
-    public static ArrayList<EstadoModel> listarEstados()throws Exception{
+    public static ArrayList<Estado> listarEstados()throws Exception{
         try{
-             
-                       
-            con = new Controlador().conectar();
-            st = con.createStatement();
-            query = "SELECT * FROM estado";
-            rs = st.executeQuery(query);
-            //Limpiar el array
+            //instancia de REST
+            EstadoREST estadoRest = new EstadoREST();   
+            //se crea un array Json
+            JsonArray jsonEstadoArray = Json.createArrayBuilder().build();
+            //se pasa el array que devuelve findAll
+            ArrayList<Estado> lol = new ArrayList<>();
+            lol = estadoRest.findAll(ArrayList.class);
+            jsonEstadoArray = estadoRest.findAll(JsonArray.class);
+            
+            //limpiar array
             alEstado.removeAll(alEstado);
-            //guardar los datos del rs  al array
-            while(rs.next()){
-                int id;
-                String descripcion;
-                //se asignan los valores que devuelve rs a las variables
-                id = rs.getInt("idEstado");
-                descripcion = rs.getString("descripcion");
-                //crea una instancia y la guarda en el array
-                alEstado.add(new EstadoModel(id, descripcion));
+            if(jsonEstadoArray != null){
+                int largo = jsonEstadoArray.size();
+                for(int i = 0; i < largo; i++){
+                    JsonObject object =(JsonObject) jsonEstadoArray.get(i);
+                
+                    String desc = object.get("descripcion").toString();
+                
+                    int idEstado = Integer.parseInt(object.get("idEstado").toString());
+                
+                    String descripcion = desc.replace("\"", "");;
+                    alEstado.add(new Estado(idEstado, descripcion));
+                }
             }
-            con.close();
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null, "Error al cargar estado :" + sqle);
+
+    
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al cargar estado :" + e);
         }
         //retorna el array;
         return alEstado;
@@ -109,29 +113,9 @@ public class EstadoController {
     }
     
     public static String prueba (){
-        EstadoREST estadoRest = new EstadoREST();
-        ArrayList<Estado> alEstadoEntity = new ArrayList<>();    
-        JsonArray jsonEstadoArray = Json.createArrayBuilder().build();
-        jsonEstadoArray = estadoRest.findAll(JsonArray.class);
-        String respuesta = "";
-
-        
-        if(jsonEstadoArray != null){
-           int largo = jsonEstadoArray.size();
-            for(int i = 0; i < largo; i++){
-                JsonObject object =(JsonObject) jsonEstadoArray.get(i);
-                
-                String descripcion = object.get("descripcion").toString();
-                String idEstado = object.get("idEstado").toString();
-                
-                respuesta = descripcion + "    "+ idEstado;
-            }
-        }
         
         
-        
-        
-        return respuesta;
+        return "";
     }
     
     
