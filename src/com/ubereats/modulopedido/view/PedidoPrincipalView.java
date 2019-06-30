@@ -7,7 +7,8 @@ package com.ubereats.modulopedido.view;
 
 import com.ubereats.modulopedido.controller.modelcontroller.PedidoController;
 import com.ubereats.modulopedido.model.PedidoModel;
-import com.ubereats.modulopedido.controller.PedidoREST;
+
+import com.ubereats.modulopedido.controller.modelcontroller.EstadoController;
 import java.awt.Image;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         jlLogo.setIcon(new ImageIcon(ruta + "ubereats-logo.png"));
         //contar los pedidos totales que hay
         rellenarLabel(lblContar);
-        
+        probandoRest();
     }
 
     /**
@@ -442,6 +443,11 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
     public void rellenarLabel(JLabel lblContar){
 
         lblContar.setText("Total de pedidos : " + PedidoController.contarPedidos());
+    }
+    
+    
+    public void probandoRest(){
+        System.out.println(EstadoController.prueba());
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;

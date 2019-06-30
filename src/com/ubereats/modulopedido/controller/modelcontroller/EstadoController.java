@@ -4,20 +4,34 @@
  * and open the template in the editor.
  */
 package com.ubereats.modulopedido.controller.modelcontroller;
+import com.ubereats.modulopedido.controller.EstadoREST;
 import com.ubereats.modulopedido.model.EstadoModel;
 import com.ubereats.modulopedido.controller.Controlador;
+import com.ubereats.modulopedido.entities.Estado;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.swing.JOptionPane;
+import javax.ws.rs.core.GenericType;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.glassfish.jersey.client.ClientResponse;
+
+
+
+
 
 /**
  *
  * @author Riaven
  */
 public class EstadoController {
+    
     private static Connection con = null;
     private static Statement st;
     private static ResultSet rs;
@@ -27,6 +41,8 @@ public class EstadoController {
     //metodo que busca y retorna todo lo de la tabla pedido desde la bd
     public static ArrayList<EstadoModel> listarEstados()throws Exception{
         try{
+             
+                       
             con = new Controlador().conectar();
             st = con.createStatement();
             query = "SELECT * FROM estado";
@@ -92,6 +108,31 @@ public class EstadoController {
         return estadito;
     }
     
+    public static String prueba (){
+        EstadoREST estadoRest = new EstadoREST();
+        ArrayList<Estado> alEstadoEntity = new ArrayList<>();    
+        JsonArray jsonEstadoArray = Json.createArrayBuilder().build();
+        jsonEstadoArray = estadoRest.findAll(JsonArray.class);
+        String respuesta = "";
+
+        
+        if(jsonEstadoArray != null){
+           int largo = jsonEstadoArray.size();
+            for(int i = 0; i < largo; i++){
+                JsonObject object =(JsonObject) jsonEstadoArray.get(i);
+                
+                String descripcion = object.get("descripcion").toString();
+                String idEstado = object.get("idEstado").toString();
+                
+                respuesta = descripcion + "    "+ idEstado;
+            }
+        }
+        
+        
+        
+        
+        return respuesta;
+    }
     
     
 }
