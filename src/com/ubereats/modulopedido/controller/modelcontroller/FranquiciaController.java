@@ -7,6 +7,7 @@ package com.ubereats.modulopedido.controller.modelcontroller;
 //Paquetes necesarios
 import com.ubereats.modulopedido.controller.FranquiciaREST;
 import com.ubereats.modulopedido.entities.Franquicia;
+import com.ubereats.modulopedido.entities.Local;
 import com.ubereats.modulopedido.model.FranquiciaModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +47,19 @@ public class FranquiciaController {
                     //info
                     int idFranquicia = Integer.parseInt(objeto.get("idFranquicia").toString());
                     String nombre = objeto.get("nombre").toString().replace("\"", "");
+                    JsonObject objetoLocal =  (JsonObject) objeto.get("idLocal");
+                    //local
+                    Local local;
+                    local =null;
+                    //Llamar local
+                    int idLocal = Integer.parseInt(objetoLocal.get("idLocal").toString());
+                    local = LocalController.buscarLocalporCodigo(idLocal);
                     //rellenar el array
-                    alFranquicia.add(new Franquicia(idFranquicia, nombre));                 
+                    alFranquicia.add(new Franquicia(idFranquicia, nombre, local));                 
                 }
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al cargar estado :" + e);
+            JOptionPane.showMessageDialog(null, "Error al cargar franquicia :" + e);
         }
         //retorna el array;
         return alFranquicia;
@@ -66,10 +74,13 @@ public class FranquiciaController {
             
             int idFranquicia = Integer.parseInt(jsonBuscarCodigo.get("idFranquicia").toString());
             String nombre = jsonBuscarCodigo.get("nombre").toString().replace("\"", "");
-            
-            franquicia = new Franquicia(idFranquicia, nombre);
+            JsonObject objetoLocal =  (JsonObject) jsonBuscarCodigo.get("idLocal");
+            int idLocal = Integer.parseInt(objetoLocal.get("idLocal").toString());
+            //objeto local
+            Local local = LocalController.buscarLocalporCodigo(idLocal);
+            franquicia = new Franquicia(idFranquicia, nombre, local);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error al buscar Local" + e);
+            JOptionPane.showMessageDialog(null,"Error al buscar Franquicia" + e);
         }
         //retorna el objeto de tipo franquiciaModel
         return franquicia;    
@@ -91,18 +102,21 @@ public class FranquiciaController {
             List<Franquicia> lista= consultaEstado.getResultList();
             int idFranquicia;
             String nombre;
+            Local local;
             
             idFranquicia = 0;
+            local = null;
             nombre = "";
             
             for(int i = 0; i < lista.size(); i++){
                 idFranquicia = lista.get(i).getIdFranquicia();
                 nombre = lista.get(i).getNombre();
+                local = lista.get(i).getIdLocal();
             }
-            franquicia = new Franquicia(idFranquicia, nombre);
+            franquicia = new Franquicia(idFranquicia, nombre,local);
             em.close();
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error al buscar Local" + e);
+            JOptionPane.showMessageDialog(null,"Error al buscar Franquicia" + e);
         }
         //se retorna el objeto de tipo FranquiciaModel
         return franquicia;    

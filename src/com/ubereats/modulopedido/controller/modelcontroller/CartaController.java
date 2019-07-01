@@ -5,19 +5,18 @@
  */
 package com.ubereats.modulopedido.controller.modelcontroller;
 import com.ubereats.modulopedido.controller.CartaREST;
-import com.ubereats.modulopedido.controller.Controlador;
 import com.ubereats.modulopedido.entities.Carta;
-import com.ubereats.modulopedido.model.CartaModel;
-import com.ubereats.modulopedido.model.FranquiciaModel;
-import com.ubereats.modulopedido.model.LocalModel;
+import com.ubereats.modulopedido.entities.Franquicia;
+import com.ubereats.modulopedido.entities.Local;
 import java.util.ArrayList;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.Connection;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
 /**
  *
@@ -43,7 +42,22 @@ public class CartaController {
                     int idCarta =  Integer.parseInt(objeto.get("idCarta").toString());
                     String nombre = objeto.get("nombre").toString().replace("\"", "");
                     String descripcion = objeto.get("descripcion").toString().replace("\"", "");
-                    alCarta.add(new Carta(idCarta, nombre, descripcion));
+                    //se captura en jsonobject franquicia y local
+                    JsonObject objetoFranquicia = (JsonObject) objeto.get("idFranquicia");
+                    JsonObject objetoLocal = (JsonObject) objeto.get("idLocal");
+                    //declaracion e inicializacion de id de ambos
+                    int idFranquicia = 0;
+                    int idLocal = 0;
+                    //se obtienen los ids
+                    idFranquicia = Integer.parseInt(objetoFranquicia.get("idFranquicia").toString());
+                    idLocal = Integer.parseInt(objetoLocal.get("idLocal").toString());
+                    //se crean objetos de cada una
+                    Local local = null;
+                    Franquicia franquicia  = null;
+                    //se instancia
+                    local = LocalController.buscarLocalporCodigo(idLocal);
+                    franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
+                    alCarta.add(new Carta(idCarta, nombre, descripcion, franquicia,local));
                 }
             }
             
@@ -59,12 +73,31 @@ public class CartaController {
             JsonObject jsonBuscarCarta = Json.createObjectBuilder().build();
             //método a necesitar
             jsonBuscarCarta = cartaRest.find(JsonObject.class, Integer.toString(idCarta));
-            //parámetros
-            int idCa =  Integer.parseInt(jsonBuscarCarta.get("idCarta").toString());
-            String nombre = jsonBuscarCarta.get("nombre").toString().replace("\"", "");
-            String descripcion = jsonBuscarCarta.get("descripcion").toString().replace("\"", "");
+            if(jsonBuscarCarta != null){
+                //parámetros
+                int idCa =  Integer.parseInt(jsonBuscarCarta.get("idCarta").toString());
+                String nombre = jsonBuscarCarta.get("nombre").toString().replace("\"", "");
+                String descripcion = jsonBuscarCarta.get("descripcion").toString().replace("\"", "");
+                //se captura en jsonobject franquicia y local
+                JsonObject objetoFranquicia = (JsonObject) jsonBuscarCarta.get("idFranquicia");
+                JsonObject objetoLocal = (JsonObject) jsonBuscarCarta.get("idLocal");
+                 //declaracion e inicializacion de id de ambos
+                int idFranquicia = 0;
+                int idLocal = 0;
+                        //se obtienen los ids
+                idFranquicia = Integer.parseInt(objetoFranquicia.get("idFranquicia").toString());
+                idLocal = Integer.parseInt(objetoLocal.get("idLocal").toString());
+                //se crean objetos de cada una
+                Local local = null;
+                Franquicia franquicia  = null;
+                //se instancia
+                local = LocalController.buscarLocalporCodigo(idLocal);
+                franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
             
-            carta = new Carta(idCa, nombre, descripcion);
+                carta = new Carta(idCa, nombre, descripcion, franquicia, local);
+            }else{
+                JOptionPane.showMessageDialog(null,"No se encontraron cartas en la Base de Datos");
+            }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar Carta" + e);
         }
@@ -74,7 +107,36 @@ public class CartaController {
     public static Carta buscarCartaPorNombre(String nombreCarta)throws Exception{
         carta = null;
         try{
-           //porhacer
+           // se nombra el persistence
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModuloPedidoPU");
+            EntityManager em = emf.createEntityManager();
+            //se llama a la query
+            TypedQuery<Carta> consultaCarta= em.createNamedQuery("Estado.findByDescripcion", Carta.class);
+            //se cambia el parámetro para hacer la busqueda
+            consultaCarta.setParameter("descripcion", nombreCarta);
+            
+            List<Carta> lista= consultaCarta.getResultList();
+            
+            int idCa ;
+            String nombre;
+            String descripcion;
+            Franquicia franquicia;
+            Local local;
+            idCa = 0;
+            nombre = null;
+            descripcion = null;
+            franquicia = null;
+            local = null;
+            
+            for(int i = 0; i < lista.size(); i++){
+                idCa = lista.get(i).getIdCarta();
+                nombre = lista.get(i).getNombre();
+                descripcion = lista.get(i).getDescripcion();
+                franquicia = lista.get(i).getIdFranquicia();
+                local = lista.get(i).getIdLocal();
+            }
+            carta = new Carta(idCa, nombre, descripcion, franquicia, local);
+            em.close();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar Carta" + e);
         }

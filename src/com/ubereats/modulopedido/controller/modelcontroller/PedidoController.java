@@ -7,7 +7,11 @@ package com.ubereats.modulopedido.controller.modelcontroller;
 import com.ubereats.modulopedido.controller.PedidoREST;
 import com.ubereats.modulopedido.model.PedidoModel;
 import com.ubereats.modulopedido.controller.Controlador;
+import com.ubereats.modulopedido.entities.Carta;
 import com.ubereats.modulopedido.entities.Estado;
+import com.ubereats.modulopedido.entities.Franquicia;
+import com.ubereats.modulopedido.entities.Local;
+import com.ubereats.modulopedido.entities.Pedido;
 import com.ubereats.modulopedido.model.CartaModel;
 import com.ubereats.modulopedido.model.EstadoModel;
 import com.ubereats.modulopedido.model.FranquiciaModel;
@@ -17,6 +21,9 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
 import javax.swing.JOptionPane;
 /**
  *
@@ -24,44 +31,64 @@ import javax.swing.JOptionPane;
  */
 public class PedidoController {
     private static PedidoREST pedidoRest = new PedidoREST();
+    private static Pedido pedido;
+     private static ArrayList<Pedido> alPedido = new ArrayList<>();
+    
     private static Connection con = null;
     private static Statement st;
     private static ResultSet rs;
     private static String query;
-    private static ArrayList<PedidoModel> alPedido = new ArrayList<>();
+   
     //método para poder listar a todos los pedidos existentes en la base de datos
-    public static ArrayList<PedidoModel> listarPedidos()throws Exception{
-        //Se crea la conexión
-        con = new Controlador().conectar();
-        st = con.createStatement();
-        //query a ejecutar
-        query = "SELECT * FROM pedido";
-        rs = st.executeQuery(query);
-        //Limpiar el array alPedido
-        alPedido.removeAll(alPedido);
-        //retorna todos los resultados encontrados;
-        while(rs.next()){
-            //pasa a una variable cada uno de los resultados de cada columna de una fila de la BD
-            int idPedido = rs.getInt("idPedido");
-            int cantidad = rs.getInt("cantidad");
-            int idEstado = rs.getInt("idEstado");
-            int idCarta = rs.getInt("idCarta");
-            int idFranquicia = rs.getInt("idFranquicia");
-            int idLocal = rs.getInt("idLocal");
-            //Se crea una instancia de estado segun el id que se rescata desde la bd
-            Estado estado = EstadoController.buscarEstadoPorId(idEstado);
-            //Se crea una instancia de Carta segun el id que se rescata desde la bd
-            CartaModel carta = CartaController.buscarCartaPorId(idCarta);
-            //Se crea una instancia de Franquicia segun el id que se rescata desde la bd
-            FranquiciaModel franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
-            //Se crea una instancia de local segun el id que se rescata desde la bd
-            LocalModel local = LocalController.buscarLocalporCodigo(idLocal);
-            //se añade al array un nuevo objeto de tipo pedido
-            //alPedido.add(new PedidoModel(idPedido, cantidad, estado, carta, franquicia, local));
+    public static ArrayList<Pedido> listarPedidos()throws Exception{
+        try{
+            //crear array tipo json
+            JsonArray jsonPedidoArray = Json.createArrayBuilder().build();
+            //uso del metodo correspondiente
+            jsonPedidoArray = pedidoRest.findAll(JsonArray.class);
+            //limpiar array
+            alPedido.removeAll(alPedido);
+            if(jsonPedidoArray != null){
+                int tope = jsonPedidoArray.size();
+                for (int i = 0; i < tope; i++){
+                    JsonObject objeto = (JsonObject) jsonPedidoArray.get(i);
+                    int idPedido = Integer.parseInt(objeto.get("idPedido").toString());
+                    int cantidad = Integer.parseInt(objeto.get("cantidad").toString());
+                    //se sacan los objetos 
+                    JsonObject objetoEstado = (JsonObject) objeto.get("idEstado");
+                    JsonObject objetoLocal = (JsonObject) objeto.get("idLocal");
+                    JsonObject objetoFranquicia = (JsonObject) objeto.get("idFranquicia");
+                    JsonObject objetoCarta = (JsonObject) objeto.get("idCarta");
+                    //declaracion e inicializacion de ids
+                    int idEstado = 0;
+                    int idLocal = 0;
+                    int idFranquicia = 0;
+                    int idCarta = 0;
+                    //otorgar valor real
+                    idEstado = Integer.parseInt(objetoEstado.get("idEstado").toString());
+                    idLocal = Integer.parseInt(objetoLocal.get("idLocal").toString());
+                    idFranquicia = Integer.parseInt(objetoFranquicia.get("idFranquicia").toString());
+                    idCarta = Integer.parseInt(objetoCarta.get("idCarta").toString());
+                    //declaracion e inicializacion
+                    Estado estado = null;
+                    Local local = null;
+                    Franquicia franquicia = null;
+                    Carta carta = null;
+                    //consulta por id
+                    estado = EstadoController.buscarEstadoPorId(idEstado);
+                    local = LocalController.buscarLocalporCodigo(idLocal);
+                    franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
+                    carta = CartaController.buscarCartaPorId(idCarta);
+                    //añade el pedido al array
+                    alPedido.add(new Pedido(idPedido, cantidad, estado, carta, franquicia, local));
+                }
+            }else{
+                JOptionPane.showMessageDialog(null,"No se encontraron pedidos en la Base de Datos");
+            }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al listar pedidos " + e);
         }
-        //se cierra la base de datos
-        con.close();
-        //retorna el array de tipo pedido
         return alPedido;
     }
     //metodo para agregar nuevo pedido a la bd
@@ -116,33 +143,19 @@ public class PedidoController {
         return eliminado;
     }
     //Método para buscar un pedido en específico con su id
-    public static PedidoModel buscarPedidoPorID (int idPedido)throws Exception{
-        PedidoModel pedido = null;
+    public static Pedido buscarPedidoPorID (int idPedido)throws Exception{
+        pedido = null;
         try{
-            con = new Controlador().conectar();
-            st = con.createStatement();
-            query = "SELECT * FROM pedido WHERE idPedido =" + idPedido;
-            rs = st.executeQuery(query);
-            //obtener los datos que recoge rs
-            rs.next();
-            int idP = rs.getInt("idPedido");
-            int cantidad = rs.getInt("cantidad");
-            int idEstado = rs.getInt("idEstado");
-            int idCarta = rs.getInt("idCarta");
-            int idFranquicia = rs.getInt("idFranquicia");
-            int idLocal = rs.getInt("idLocal");
-            //Se crea una instancia de estado segun el id que se rescata desde la bd
-            Estado estado = EstadoController.buscarEstadoPorId(idEstado);
-            //Se crea una instancia de Carta segun el id que se rescata desde la bd
-            CartaModel carta = CartaController.buscarCartaPorId(idCarta);
-            //Se crea una instancia de Franquicia segun el id que se rescata desde la bd
-            FranquiciaModel franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
-            //Se crea una instancia de local segun el id que se rescata desde la bd
-            LocalModel local = LocalController.buscarLocalporCodigo(idLocal);
-            //se crea una nueva instancia al objeto pedido
-            //pedido = new PedidoModel(idP, cantidad, estado, carta, franquicia, local);
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al buscar pedido " + sqle);
+            //objeto json
+            JsonObject jsonBuscarPedido = Json.createObjectBuilder().build();
+            jsonBuscarPedido = pedidoRest.find(JsonObject.class, Integer.toString(idPedido));
+            //parametros
+            int idPedid = Integer.parseInt(jsonBuscarPedido.get("idPedido").toString());
+            int cantidad  = Integer.parseInt(jsonBuscarPedido.get("cantidad").toString());
+            //crea pedido nuevo
+            pedido = new Pedido(idPedid,cantidad); 
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al buscar pedido " + e);
         }
         return pedido;
     }

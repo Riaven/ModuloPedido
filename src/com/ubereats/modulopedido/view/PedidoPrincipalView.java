@@ -5,10 +5,15 @@
  */
 package com.ubereats.modulopedido.view;
 
+import com.ubereats.modulopedido.controller.modelcontroller.CartaController;
 import com.ubereats.modulopedido.controller.modelcontroller.PedidoController;
 import com.ubereats.modulopedido.model.PedidoModel;
 
 import com.ubereats.modulopedido.controller.modelcontroller.EstadoController;
+import com.ubereats.modulopedido.controller.modelcontroller.FranquiciaController;
+import com.ubereats.modulopedido.controller.modelcontroller.LocalController;
+import com.ubereats.modulopedido.entities.Franquicia;
+import com.ubereats.modulopedido.entities.Pedido;
 import java.awt.Image;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,7 +61,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         jlLogo.setIcon(new ImageIcon(ruta + "ubereats-logo.png"));
         //contar los pedidos totales que hay
         rellenarLabel(lblContar);
-        
+        System.out.println(CartaController.buscarCartaPorId(2));
        
     }
 
@@ -282,7 +287,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         try{
             if(!jtxBuscarId.getText().isEmpty()){
                 idPedido = Integer.parseInt(jtxBuscarId.getText());
-                pedido = PedidoController.buscarPedidoPorID(idPedido);
+               // pedido = PedidoController.buscarPedidoPorID(idPedido);
                 if(pedido != null ){
                     opcion =  JOptionPane.showOptionDialog(null, "¿Qué desea hacer con el pedido " + idPedido + '?', 
                                                            "Pedido " + idPedido ,
@@ -370,19 +375,19 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
                 modelo.addColumn(columna);
             }
             //Se rellena con el array de listar pedidos         
-            for(PedidoModel DatoPedido : PedidoController.listarPedidos()){
+            for(Pedido DatoPedido : PedidoController.listarPedidos()){
                 modelo.addRow(new Object[]{DatoPedido.getIdPedido(),
                                            DatoPedido.getCantidad(),
-                                           DatoPedido.getEstado().getDescripcion(),
-                                           DatoPedido.getCarta().getNombre(),
-                                           DatoPedido.getFranquicia().getNombre(),
-                                           DatoPedido.getLocal().getMenu()}); 
+                                           DatoPedido.getIdEstado().getDescripcion(),
+                                           DatoPedido.getIdCarta().getNombre(),
+                                           DatoPedido.getIdFranquicia().getNombre(),
+                                           DatoPedido.getIdLocal().getMenu()}); 
             }
             //se actualiza la Tabla
             jtPedido.setModel(modelo);
             //modelo.fireTableDataChanged();
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error llevar JTable" + sqle);
+        }catch(Exception sqle){
+            JOptionPane.showMessageDialog(null,"Error llenar JTable " + sqle);
         }
     }
     //Metodo para que saber la fila seleccionada de la Tabla
@@ -405,10 +410,10 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         try{
             
             if(id>0){
-                PedidoModel p = PedidoController.buscarPedidoPorID(id);
+                //PedidoModel p = PedidoController.buscarPedidoPorID(id);
                 PedidoModificarView modi = new PedidoModificarView();
                 
-                modi.obtenerPedido(p);
+               // modi.obtenerPedido(p);
                 modi.setVisible(true);
             }else{
                 JOptionPane.showMessageDialog(null, "No se puede modificar, pedido no seleccionado");

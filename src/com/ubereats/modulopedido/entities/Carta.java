@@ -67,6 +67,15 @@ public class Carta implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public Carta(Integer idCarta, String nombre, String descripcion, Franquicia idFranquicia, Local idLocal) {
+        this.idCarta = idCarta;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.idFranquicia = idFranquicia;
+        this.idLocal = idLocal;
+    }
+
+    
     public Integer getIdCarta() {
         return idCarta;
     }

@@ -61,6 +61,14 @@ public class Franquicia implements Serializable {
         this.nombre = nombre;
     }
 
+    public Franquicia(Integer idFranquicia, String nombre, Local idLocal) {
+        this.idFranquicia = idFranquicia;
+        this.nombre = nombre;
+        this.idLocal = idLocal;
+    }
+
+    
+    
     public Integer getIdFranquicia() {
         return idFranquicia;
     }

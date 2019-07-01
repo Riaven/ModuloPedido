@@ -39,10 +39,10 @@ public class EstadoController {
             //comprueba que el array json no este nulo
             if(jsonEstadoArray != null){
                 
-                int largo = jsonEstadoArray.size();
-                for(int i = 0; i < largo; i++){
+                int tope = jsonEstadoArray.size();
+                for(int i = 0; i < tope; i++){
                     //crea un objeto Json para sacar la información
-                    JsonObject object =(JsonObject) jsonEstadoArray.get(i);
+                    JsonObject object = (JsonObject) jsonEstadoArray.get(i);
                     //descripcion 
                     String desc = object.get("descripcion").toString();
                     //int
@@ -108,6 +108,7 @@ public class EstadoController {
                 idEst = lista.get(i).getIdEstado();
             }
             estado = new Estado(idEst, desc);
+            
             em.close();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar estado " + e);

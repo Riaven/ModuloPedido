@@ -63,6 +63,16 @@ public class Pedido implements Serializable {
         this.cantidad = cantidad;
     }
 
+    public Pedido(Integer idPedido, int cantidad, Estado idEstado, Carta idCarta, Franquicia idFranquicia, Local idLocal) {
+        this.idPedido = idPedido;
+        this.cantidad = cantidad;
+        this.idEstado = idEstado;
+        this.idCarta = idCarta;
+        this.idFranquicia = idFranquicia;
+        this.idLocal = idLocal;
+    }
+    
+    
     public Integer getIdPedido() {
         return idPedido;
     }

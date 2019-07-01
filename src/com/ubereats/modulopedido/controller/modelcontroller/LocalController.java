@@ -6,9 +6,6 @@
 package com.ubereats.modulopedido.controller.modelcontroller;
 import com.ubereats.modulopedido.controller.LocalREST;
 import com.ubereats.modulopedido.entities.Local;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.Json;
