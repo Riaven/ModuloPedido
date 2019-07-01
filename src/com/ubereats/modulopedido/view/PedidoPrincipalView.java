@@ -56,7 +56,7 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         jlLogo.setIcon(new ImageIcon(ruta + "ubereats-logo.png"));
         //contar los pedidos totales que hay
         rellenarLabel(lblContar);
-        System.out.println(EstadoController.prueba("Listo").getIdEstado());
+        
        
     }
 

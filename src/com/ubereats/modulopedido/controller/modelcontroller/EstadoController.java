@@ -28,9 +28,7 @@ public class EstadoController {
     private static EstadoREST estadoRest = new EstadoREST(); 
     //metodo que busca y retorna todo lo de la tabla pedido desde la bd
     public static ArrayList<Estado> listarEstados()throws Exception{
-        try{
-            //instancia de REST
-            
+        try{ 
             //se crea un array Json
             JsonArray jsonEstadoArray = Json.createArrayBuilder().build();
             //se pasa el array que devuelve findAll
@@ -117,40 +115,7 @@ public class EstadoController {
         return estado;
     }
     
-    ////////////////////////////
-    public static Estado prueba (String descripcion)throws Exception{
-        estado = null;
-        
-        try{
-            // se nombra el persistence
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModuloPedidoPU");
-            EntityManager em = emf.createEntityManager();
-            //se llama a la query
-            TypedQuery<Estado> consultaEstado= em.createNamedQuery("Estado.findByDescripcion", Estado.class);
-            //se cambia el parámetro para hacer la busqueda
-            consultaEstado.setParameter("descripcion", descripcion);
-            
-            List<Estado> lista= consultaEstado.getResultList();
-            
-            String desc;
-            int idEst;
-            
-            desc = null;
-            idEst = 0;
-            
-            for(int i = 0; i < lista.size(); i++){
-                desc = lista.get(i).getDescripcion();
-                idEst = lista.get(i).getIdEstado();
-            }
-            estado = new Estado(idEst, desc);
-            em.close();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error al buscar estado " + e);
-        }
-        return estado;
-    }
-    
-    //////////////////////////////////////
+   
     
     
 }

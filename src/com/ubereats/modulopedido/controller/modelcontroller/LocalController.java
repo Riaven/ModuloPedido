@@ -4,15 +4,20 @@
  * and open the template in the editor.
  */
 package com.ubereats.modulopedido.controller.modelcontroller;
-import com.ubereats.modulopedido.controller.Controlador;
-import com.ubereats.modulopedido.model.LocalModel;
+import com.ubereats.modulopedido.controller.LocalREST;
+import com.ubereats.modulopedido.entities.Local;
 import java.sql.Connection;
 import java.sql.Statement;
-//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.swing.JComboBox;
+import java.util.List;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
 /**
  *
@@ -20,81 +25,102 @@ import javax.swing.JOptionPane;
  */
 public class LocalController{
     //Datos a usar
-    private static ArrayList<LocalModel> alLocal = new ArrayList<>();
-    private static Connection con = null;
-    private static Statement st;
-    private static ResultSet rs;
-    private static String query;
+    private static ArrayList<Local> alLocal = new ArrayList<>();
+    private static Local local;
+    private static LocalREST localRest = new LocalREST();
+  
     //Método que devuelve un array con los locales de la base de datos
-    public static ArrayList<LocalModel> listarLocales()throws Exception{
+    public static ArrayList<Local> listarLocales()throws Exception{
         try{
-            con = new Controlador().conectar(); //se crea la instancia para conectar la base de datos
-            st = con.createStatement();// crea un statement en la base de datos
-            query = "SELECT * FROM local ORDER BY idLocal"; //selecciona todo desde la tabla de local
-            rs = st.executeQuery(query);//ejecuta la query y se guarda en rs
-            //limpia el array de local
+            //Se crea array JSON
+            JsonArray jsonLocalArray = Json.createArrayBuilder().build();
+            //Se le orotga la info que devuelve findall
+            jsonLocalArray = localRest.findAll(JsonArray.class);
+            //limpiar array
             alLocal.removeAll(alLocal);
-            //Examina todos los resultados que devuelve rs
-            while(rs.next()){
-                int id = rs.getInt("idLocal");
-                String menu = rs.getString("menu");
-                String direccion = rs.getString("direccion");
-                String telefono = rs.getString("telefono");
-                String correo = rs.getString("correo");
-                String horario = rs.getString("horario");
-                //se añade un nueva instancia cada vez que devuelva resultados rs        
-                alLocal.add(new LocalModel(id, menu, direccion, telefono, correo, horario));
+            //comprobar si jsonLocalArray no esta nulo
+            if(jsonLocalArray != null){
+                int largo = jsonLocalArray.size();
+                for(int i = 0; i < largo ; i++){
+                    JsonObject objeto = (JsonObject) jsonLocalArray.get(i);
+                    //se saca lo que tiene local
+                    int idlocal = Integer.parseInt(objeto.get("idLocal").toString());
+                    String menu = objeto.get("menu").toString().replace("\"", "");
+                    String direccion = objeto.get("direccion").toString().replace("\"", "");
+                    String telefono = objeto.get("telefono").toString().replace("\"", "");
+                    String correo = objeto.get("correo").toString().replace("\"", "");
+                    String horario = objeto.get("horario").toString().replace("\"", "");
+                    alLocal.add(new Local(idlocal, menu, direccion, telefono, correo, horario));
+                }
             }
-            con.close();
-        }catch(SQLException sqle){
+            
+        }catch(Exception e){
             //Atrapa el error y lo muestra como mensaje al usuario
-            JOptionPane.showMessageDialog(null, "Error SQL : " + sqle);
+            JOptionPane.showMessageDialog(null, "Error SQL : " + e);
         }
         //retorna el arrayList de tipo local
         return alLocal;
     }  
-    public static LocalModel buscarLocalporCodigo(int codigoLocal)throws Exception{
-        LocalModel local = null;
+    public static Local buscarLocalporCodigo(int codigoLocal)throws Exception{
+        local = null;
         try{
-            con = new Controlador().conectar();
-            st = con.createStatement();
-            query = "SELECT * FROM local WHERE idLocal = " + codigoLocal;
-            rs = st.executeQuery(query);
-            rs.next();
-             int id = rs.getInt("idLocal");
-             String menu = rs.getString("menu");
-             String direccion = rs.getString("direccion");
-             String telefono = rs.getString("telefono");
-             String correo = rs.getString("correo");
-             String horario = rs.getString("horario");
-             
-             local = new LocalModel(id,menu,direccion,telefono,correo,horario);
-             con.close();
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
+            //Se crea un objeto json
+            JsonObject jsonBuscarLocal = Json.createObjectBuilder().build();
+            jsonBuscarLocal = localRest.find(JsonObject.class, Integer.toString(codigoLocal));
+            //rellenando parametros del constructor
+            int idLocal = Integer.parseInt(jsonBuscarLocal.get("idLocal").toString());
+            String menu = jsonBuscarLocal.get("menu").toString().replace("\"", "");
+            String direccion = jsonBuscarLocal.get("direccion").toString().replace("\"", "");
+            String telefono = jsonBuscarLocal.get("telefono").toString().replace("\"", "");
+            String correo = jsonBuscarLocal.get("correo").toString().replace("\"", "");
+            String horario = jsonBuscarLocal.get("horario").toString().replace("\"", "");
+            
+            local = new Local(idLocal, menu, direccion, telefono, correo, horario);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al buscar Local" + e);
         }
         return local;    
     }
     
-    public static LocalModel buscarLocalporMenu(String menuLocal)throws Exception{
-        LocalModel local = null;
+    public static Local buscarLocalporMenu(String menuLocal)throws Exception{
+        local = null;
         try{
-            con = new Controlador().conectar();
-            st = con.createStatement();
-            query = "SELECT * FROM local WHERE menu = '" + menuLocal + "'";
-            rs = st.executeQuery(query);
-            rs.next();
-             int id = rs.getInt("idLocal");
-             String menu = rs.getString("menu");
-             String direccion = rs.getString("direccion");
-             String telefono = rs.getString("telefono");
-             String correo = rs.getString("correo");
-             String horario = rs.getString("horario");
-             
-             local = new LocalModel(id,menu,direccion,telefono,correo,horario);
-             con.close();
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al buscar Local" + sqle);
+            // se nombra el persistence
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModuloPedidoPU");
+            EntityManager em = emf.createEntityManager();
+            //se llama a la query
+            TypedQuery<Local> consultaLocal= em.createNamedQuery("Local.findByMenu", Local.class);
+            //se cambia el parámetro para hacer la busqueda
+            consultaLocal.setParameter("menu", menuLocal);
+            
+            List<Local> lista= consultaLocal.getResultList();
+            
+            int idLocal;
+            String menu;
+            String direccion;
+            String telefono;
+            String correo;
+            String horario;
+            //inicializar
+            idLocal = 0;
+            menu = "";
+            direccion  = "";
+            telefono = "";
+            correo = "";
+            horario = "";
+            
+            for(int i = 0; i < lista.size(); i++){
+                idLocal = lista.get(i).getIdLocal();
+                menu = lista.get(i).getMenu();
+                direccion = lista.get(i).getDireccion();
+                telefono = lista.get(i).getTelefono();
+                correo = lista.get(i).getCorreo();
+                horario = lista.get(i).getHorario();
+            }
+            local = new Local(idLocal, menu, direccion, telefono, correo, horario);
+            em.close();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al buscar Local" + e);
         }
         return local;    
     }
