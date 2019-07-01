@@ -5,23 +5,17 @@
  */
 package com.ubereats.modulopedido.controller.modelcontroller;
 import com.ubereats.modulopedido.controller.EstadoREST;
-import com.ubereats.modulopedido.model.EstadoModel;
-import com.ubereats.modulopedido.controller.Controlador;
 import com.ubereats.modulopedido.entities.Estado;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.swing.JOptionPane;
-
-
-
-
-
 
 /**
  *
@@ -29,41 +23,38 @@ import javax.swing.JOptionPane;
  */
 public class EstadoController {
     
-    private static Connection con = null;
-    private static Statement st;
-    private static ResultSet rs;
-    private static String query;
     private static ArrayList<Estado> alEstado = new ArrayList<>();
-    
+    private static Estado estado;
+    private static EstadoREST estadoRest = new EstadoREST(); 
     //metodo que busca y retorna todo lo de la tabla pedido desde la bd
     public static ArrayList<Estado> listarEstados()throws Exception{
         try{
             //instancia de REST
-            EstadoREST estadoRest = new EstadoREST();   
+            
             //se crea un array Json
             JsonArray jsonEstadoArray = Json.createArrayBuilder().build();
             //se pasa el array que devuelve findAll
-            ArrayList<Estado> lol = new ArrayList<>();
-            lol = estadoRest.findAll(ArrayList.class);
             jsonEstadoArray = estadoRest.findAll(JsonArray.class);
             
             //limpiar array
             alEstado.removeAll(alEstado);
+            //comprueba que el array json no este nulo
             if(jsonEstadoArray != null){
+                
                 int largo = jsonEstadoArray.size();
                 for(int i = 0; i < largo; i++){
+                    //crea un objeto Json para sacar la información
                     JsonObject object =(JsonObject) jsonEstadoArray.get(i);
-                
+                    //descripcion 
                     String desc = object.get("descripcion").toString();
-                
+                    //int
                     int idEstado = Integer.parseInt(object.get("idEstado").toString());
-                
-                    String descripcion = desc.replace("\"", "");;
+                    //cambia el formato de "descripcion" y saca las doble comillas
+                    String descripcion = desc.replace("\"", "");
+                    //se va rellenando el array tipo Estado
                     alEstado.add(new Estado(idEstado, descripcion));
                 }
             }
-
-    
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Error al cargar estado :" + e);
         }
@@ -71,52 +62,95 @@ public class EstadoController {
         return alEstado;
     }
     //busca un Estado en la base de datos por su id
-    public static EstadoModel buscarEstadoPorId(int idEstado)throws Exception{
-        //Se crea un objeto de tipo de EstadoModel
-        EstadoModel estadito = null;
+    public static Estado buscarEstadoPorId(int idEstado)throws Exception{
+        estado = null;
         try{
-        con = new Controlador().conectar();
-        st = con.createStatement();
-        query = "SELECT * FROM estado WHERE idEstado = " + idEstado;
-        rs = st.executeQuery(query);
-        rs.next();
-        int id = rs.getInt("idEstado");
-        String descripcion = rs.getString("descripcion");
-        
-        estadito =  new EstadoModel(id, descripcion);
-        con.close();
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al buscar estado" + sqle);
+         //Construye objeto Json
+            JsonObject jsonBuscarEstado = Json.createObjectBuilder().build();
+            //hace uso del metodo correspondiente
+            jsonBuscarEstado = estadoRest.find(JsonObject.class, Integer.toString(idEstado));
+
+            //descripcion 
+            String desc = jsonBuscarEstado.get("descripcion").toString();
+            //int
+            int idEst = Integer.parseInt(jsonBuscarEstado.get("idEstado").toString());
+            String descripcion = desc.replace("\"", "");
+            
+            estado = new Estado(idEst, descripcion);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al buscar estado" + e);
         }
-        //retorna un objeto ya instanciado de estadoModel
-        return estadito;
-    }
-    //Método que busca un estado en la base de datos para devolver un Objeto de tipo EstadoModel
-    public static EstadoModel buscarEstadoPorNombre(String nombreEstado)throws Exception{
-        EstadoModel estadito = null;
-        try{
-        con = new Controlador().conectar();
-        st = con.createStatement();
-        query = "SELECT * FROM estado WHERE descripcion = '" + nombreEstado + "'";
-        rs = st.executeQuery(query);
-        rs.next();
-        int id = rs.getInt("idEstado");
-        String descripcion = rs.getString("descripcion");
-        
-        estadito =  new EstadoModel(id, descripcion);
-        con.close();
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al buscar estado" + sqle);
-        }
-        //retorna el objeto ya instanciado de EstadoModel
-        return estadito;
+        //retorna un objeto ya instanciado de estado
+        return estado;
     }
     
-    public static String prueba (){
+    //Método que busca un estado en la base de datos para devolver un Objeto de tipo Estado
+    public static Estado buscarEstadoPorNombre(String nombreEstado)throws Exception{
+        estado = null;
         
-        
-        return "";
+        try{
+            // se nombra el persistence
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModuloPedidoPU");
+            EntityManager em = emf.createEntityManager();
+            //se llama a la query
+            TypedQuery<Estado> consultaEstado= em.createNamedQuery("Estado.findByDescripcion", Estado.class);
+            //se cambia el parámetro para hacer la busqueda
+            consultaEstado.setParameter("descripcion", nombreEstado);
+            
+            List<Estado> lista= consultaEstado.getResultList();
+            
+            String desc;
+            int idEst;
+            
+            desc = null;
+            idEst = 0;
+            
+            for(int i = 0; i < lista.size(); i++){
+                desc = lista.get(i).getDescripcion();
+                idEst = lista.get(i).getIdEstado();
+            }
+            estado = new Estado(idEst, desc);
+            em.close();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al buscar estado " + e);
+        }
+        return estado;
     }
+    
+    ////////////////////////////
+    public static Estado prueba (String descripcion)throws Exception{
+        estado = null;
+        
+        try{
+            // se nombra el persistence
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModuloPedidoPU");
+            EntityManager em = emf.createEntityManager();
+            //se llama a la query
+            TypedQuery<Estado> consultaEstado= em.createNamedQuery("Estado.findByDescripcion", Estado.class);
+            //se cambia el parámetro para hacer la busqueda
+            consultaEstado.setParameter("descripcion", descripcion);
+            
+            List<Estado> lista= consultaEstado.getResultList();
+            
+            String desc;
+            int idEst;
+            
+            desc = null;
+            idEst = 0;
+            
+            for(int i = 0; i < lista.size(); i++){
+                desc = lista.get(i).getDescripcion();
+                idEst = lista.get(i).getIdEstado();
+            }
+            estado = new Estado(idEst, desc);
+            em.close();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Error al buscar estado " + e);
+        }
+        return estado;
+    }
+    
+    //////////////////////////////////////
     
     
 }

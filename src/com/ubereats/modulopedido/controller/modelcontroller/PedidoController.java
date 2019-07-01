@@ -7,6 +7,7 @@ package com.ubereats.modulopedido.controller.modelcontroller;
 import com.ubereats.modulopedido.controller.PedidoREST;
 import com.ubereats.modulopedido.model.PedidoModel;
 import com.ubereats.modulopedido.controller.Controlador;
+import com.ubereats.modulopedido.entities.Estado;
 import com.ubereats.modulopedido.model.CartaModel;
 import com.ubereats.modulopedido.model.EstadoModel;
 import com.ubereats.modulopedido.model.FranquiciaModel;
@@ -48,7 +49,7 @@ public class PedidoController {
             int idFranquicia = rs.getInt("idFranquicia");
             int idLocal = rs.getInt("idLocal");
             //Se crea una instancia de estado segun el id que se rescata desde la bd
-            EstadoModel estado = EstadoController.buscarEstadoPorId(idEstado);
+            Estado estado = EstadoController.buscarEstadoPorId(idEstado);
             //Se crea una instancia de Carta segun el id que se rescata desde la bd
             CartaModel carta = CartaController.buscarCartaPorId(idCarta);
             //Se crea una instancia de Franquicia segun el id que se rescata desde la bd
@@ -56,7 +57,7 @@ public class PedidoController {
             //Se crea una instancia de local segun el id que se rescata desde la bd
             LocalModel local = LocalController.buscarLocalporCodigo(idLocal);
             //se añade al array un nuevo objeto de tipo pedido
-            alPedido.add(new PedidoModel(idPedido, cantidad, estado, carta, franquicia, local));
+            //alPedido.add(new PedidoModel(idPedido, cantidad, estado, carta, franquicia, local));
         }
         //se cierra la base de datos
         con.close();
@@ -131,7 +132,7 @@ public class PedidoController {
             int idFranquicia = rs.getInt("idFranquicia");
             int idLocal = rs.getInt("idLocal");
             //Se crea una instancia de estado segun el id que se rescata desde la bd
-            EstadoModel estado = EstadoController.buscarEstadoPorId(idEstado);
+            Estado estado = EstadoController.buscarEstadoPorId(idEstado);
             //Se crea una instancia de Carta segun el id que se rescata desde la bd
             CartaModel carta = CartaController.buscarCartaPorId(idCarta);
             //Se crea una instancia de Franquicia segun el id que se rescata desde la bd
@@ -139,7 +140,7 @@ public class PedidoController {
             //Se crea una instancia de local segun el id que se rescata desde la bd
             LocalModel local = LocalController.buscarLocalporCodigo(idLocal);
             //se crea una nueva instancia al objeto pedido
-            pedido = new PedidoModel(idP, cantidad, estado, carta, franquicia, local);
+            //pedido = new PedidoModel(idP, cantidad, estado, carta, franquicia, local);
         }catch(SQLException sqle){
             JOptionPane.showMessageDialog(null,"Error al buscar pedido " + sqle);
         }
@@ -153,7 +154,7 @@ public class PedidoController {
         EstadoModel estado = null;
         //Se busca el estado que se recibe como parametro un nombre de un estado
         //lo busca y devuelve un objeto tipo EstadoModel
-        estado = EstadoController.buscarEstadoPorNombre(nombreEstado);
+       // estado = EstadoController.buscarEstadoPorNombre(nombreEstado);
         //Primero se busca para verificar que el pedido existe dentro de la base 
         // de datos
         if(buscarPedidoPorID(idPedido)!=null){
