@@ -6,7 +6,7 @@
 package com.ubereats.modulopedido.view;
 import com.ubereats.modulopedido.controller.modelcontroller.EstadoController;
 import com.ubereats.modulopedido.controller.modelcontroller.PedidoController;
-import com.ubereats.modulopedido.model.PedidoModel;
+import com.ubereats.modulopedido.entities.Pedido;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -258,18 +258,19 @@ public class PedidoModificarView extends javax.swing.JFrame {
         });
     }
     
-    public void obtenerPedido(PedidoModel pedido)throws Exception{
+    public void obtenerPedido(Pedido pedido)throws Exception{
         //cargar datos del pedido
         jtfIdPedido.setText(Integer.toString(pedido.getIdPedido()));
         jtfCantidad.setText(Integer.toString(pedido.getCantidad()));
         //Para cargar el estado que tiene el pedido
-        cbxEstado.setSelectedItem(pedido.getEstado().getDescripcion());
+        cbxEstado.setSelectedItem(pedido.getIdEstado().getDescripcion());
         //cargar carta
-        cbxCarta.addItem(pedido.getCarta().getNombre());
+        cbxCarta.addItem(pedido.getIdCarta().getNombre());
         //cargar franquicia
-        cbxFranquicia.addItem(pedido.getFranquicia().getNombre());
+        cbxFranquicia.addItem(pedido.getIdFranquicia().getNombre());
         //cargar local
-        cbxLocal.addItem(pedido.getLocal().getMenu());
+        cbxLocal.addItem(pedido.getIdLocal().getMenu());
+        
     }
     
     

@@ -8,7 +8,6 @@ package com.ubereats.modulopedido.controller.modelcontroller;
 import com.ubereats.modulopedido.controller.FranquiciaREST;
 import com.ubereats.modulopedido.entities.Franquicia;
 import com.ubereats.modulopedido.entities.Local;
-import com.ubereats.modulopedido.model.FranquiciaModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.Json;
@@ -113,7 +112,7 @@ public class FranquiciaController {
                 nombre = lista.get(i).getNombre();
                 local = lista.get(i).getIdLocal();
             }
-            franquicia = new Franquicia(idFranquicia, nombre,local);
+            franquicia = new Franquicia(idFranquicia, nombre, local);
             em.close();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar Franquicia" + e);

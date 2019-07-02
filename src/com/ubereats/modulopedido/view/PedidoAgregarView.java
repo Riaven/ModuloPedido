@@ -11,10 +11,10 @@ import com.ubereats.modulopedido.controller.modelcontroller.LocalController;
 import com.ubereats.modulopedido.controller.modelcontroller.EstadoController;
 import com.ubereats.modulopedido.controller.modelcontroller.CartaController;
 import com.ubereats.modulopedido.controller.modelcontroller.FranquiciaController;
-import com.ubereats.modulopedido.model.CartaModel;
-import com.ubereats.modulopedido.model.EstadoModel;
-import com.ubereats.modulopedido.model.FranquiciaModel;
-import com.ubereats.modulopedido.model.LocalModel;
+import com.ubereats.modulopedido.entities.Carta;
+import com.ubereats.modulopedido.entities.Estado;
+import com.ubereats.modulopedido.entities.Franquicia;
+import com.ubereats.modulopedido.entities.Local;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -198,15 +198,17 @@ public class PedidoAgregarView extends javax.swing.JFrame {
             //variables que toman lo que recibe el jTextField de id y cantidad
             int idPedido = Integer.parseInt(jtfIdPedido.getText());
             int cantidad = Integer.parseInt(jtfCantidad.getText());
+            
+           
             try {
                 if(PedidoController.buscarPedidoPorID(idPedido) == null){
                     //se busca por el nombre del combo seleccionado y se crea un objeto de cada uno
-                    //EstadoModel estadito = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString());
-                   // CartaModel cartita = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString());
-                   // FranquiciaModel franquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString());
-                   // LocalModel localcito = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString());
+                    Estado estadito = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString());
+                    Carta cartita = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString());
+                    Franquicia franquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString());
+                    Local localcito = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString());
                     //se llama al metodo agregar pedido y se le otorga el int que devuelve a la variable exito
-                    //exito = PedidoController.agregarPedido(idPedido, cantidad, estadito, cartita, franquicia, localcito);
+                    exito = PedidoController.agregarPedido(idPedido, cantidad, estadito, cartita, franquicia, localcito);
                 }else{
                     JOptionPane.showMessageDialog(null, "Id de pedido existe");
                 }

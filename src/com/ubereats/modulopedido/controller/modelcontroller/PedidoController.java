@@ -5,21 +5,11 @@
  */
 package com.ubereats.modulopedido.controller.modelcontroller;
 import com.ubereats.modulopedido.controller.PedidoREST;
-import com.ubereats.modulopedido.model.PedidoModel;
-import com.ubereats.modulopedido.controller.Controlador;
 import com.ubereats.modulopedido.entities.Carta;
 import com.ubereats.modulopedido.entities.Estado;
 import com.ubereats.modulopedido.entities.Franquicia;
 import com.ubereats.modulopedido.entities.Local;
 import com.ubereats.modulopedido.entities.Pedido;
-import com.ubereats.modulopedido.model.CartaModel;
-import com.ubereats.modulopedido.model.EstadoModel;
-import com.ubereats.modulopedido.model.FranquiciaModel;
-import com.ubereats.modulopedido.model.LocalModel;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -32,12 +22,8 @@ import javax.swing.JOptionPane;
 public class PedidoController {
     private static PedidoREST pedidoRest = new PedidoREST();
     private static Pedido pedido;
-     private static ArrayList<Pedido> alPedido = new ArrayList<>();
-    
-    private static Connection con = null;
-    private static Statement st;
-    private static ResultSet rs;
-    private static String query;
+    private static ArrayList<Pedido> alPedido = new ArrayList<>();
+    private static Pedido prueba;
    
     //método para poder listar a todos los pedidos existentes en la base de datos
     public static ArrayList<Pedido> listarPedidos()throws Exception{
@@ -92,29 +78,48 @@ public class PedidoController {
         return alPedido;
     }
     //metodo para agregar nuevo pedido a la bd
-    public static int agregarPedido(int idPedido, int cantidad, EstadoModel estado, CartaModel carta, FranquiciaModel franquicia, LocalModel local)throws Exception{
+    public static int agregarPedido(int idPedido, int cantidad, Estado estado, Carta carta, Franquicia franquicia, Local local)throws Exception{
         /**variable que retornara 1 si se agrego correctamente o
          * un 0 (que esta por defecto) si es que la fila no ha sido agregada 
         */
         int filaAgregada = 0;
-        try{
-            //se crea la conexion con la bd
-            con = new Controlador().conectar();
-            st = con.createStatement();
-            //query más los atributos correspondientes para insertar en la base de datos
-            query = "INSERT INTO pedido VALUES("+ idPedido + ',' +
-                                                  cantidad + ',' +
-                                                  estado.getIdEstado() + ',' +
-                                                  carta.getIdCarta() + ',' +
-                                                  franquicia.getIdFranquicia() + ',' +
-                                                  local.getIdLocal()  +')';
-            //filaAgregada toma el numero de filas agregadas que devuelve el st
-            filaAgregada = st.executeUpdate(query);
-            //se cierra la base de datos
-            con.close();
-        }catch(SQLException sqle){
-            JOptionPane.showMessageDialog(null,"Error al agregar pedido " + sqle);
-        }
+        pedido = null;
+        //try{
+            if(buscarPedidoPorID(idPedido)==null){
+                //se crea una instancia de pedido
+                pedido = new Pedido(idPedido, cantidad, estado, carta, franquicia, local);
+                System.out.println("Pedido");
+                System.out.println(pedido.getIdPedido());
+                System.out.println(pedido.getCantidad());
+                System.out.println("Estado");
+                System.out.println(pedido.getIdEstado().getDescripcion());
+                System.out.println(pedido.getIdEstado().getIdEstado());
+                System.out.println("Carta");
+                System.out.println(pedido.getIdCarta().getIdCarta());
+                System.out.println(pedido.getIdCarta().getDescripcion());
+                System.out.println(pedido.getIdCarta().getNombre());
+                System.out.println(pedido.getIdCarta().getIdFranquicia().getIdFranquicia());
+                System.out.println(pedido.getIdCarta().getIdLocal().getMenu());
+                System.out.println("Franquicia");
+                System.out.println(pedido.getIdFranquicia().getNombre());
+                System.out.println(pedido.getIdFranquicia().getIdFranquicia());
+                System.out.println(pedido.getIdFranquicia().getIdLocal().getMenu());
+                 System.out.println("Local");
+                System.out.println(pedido.getIdLocal().getMenu());
+                System.out.println(pedido.getIdLocal().getIdLocal());
+                //prueba=buscarPedidoPorID(1);
+                //prueba.setIdPedido(234);
+                //pedidoRest.create(pedido);
+                //pedidoRest.create(prueba);
+                if(buscarPedidoPorID(idPedido)!=null){
+                    filaAgregada = 1;
+                }
+            }else{
+                JOptionPane.showMessageDialog(null,"Pedido ya existe");
+            }
+        //}catch(Exception e){
+         //   JOptionPane.showMessageDialog(null,"Error al agregar pedido " + e);
+       // }
         //se devuelve el total de filas agregadas
         return filaAgregada;
     }
@@ -126,14 +131,14 @@ public class PedidoController {
         //Se verifica que el pedido exista en la base de datos
         if(buscarPedidoPorID(idPedido)!=null){
             try{
-                con = new Controlador().conectar();
-                st = con.createStatement();
-                //query para eliminar la fila donde el id sea igual 
-                //al recibido como parámetro
-                query = "DELETE  FROM pedido WHERE idPedido = " +idPedido;
-                //la variable encapsulada eliminado capta las filas eliminadas
-                eliminado = st.executeUpdate(query);
-            }catch(SQLException sqle){
+                //metodo del rest que elimina un pedido
+                pedidoRest.remove(Integer.toString(idPedido));
+                //comprueba nuevamente el id en la base de datos
+                if(buscarPedidoPorID(idPedido) == null){
+                    //eliminado cambia a 1 ya que ya no existe el pedido en la base de datos
+                    eliminado = 1;
+                }
+            }catch(Exception sqle){
                 JOptionPane.showMessageDialog(null,"Error al eliminar pedido " + sqle);
             }
         }else{
@@ -152,8 +157,33 @@ public class PedidoController {
             //parametros
             int idPedid = Integer.parseInt(jsonBuscarPedido.get("idPedido").toString());
             int cantidad  = Integer.parseInt(jsonBuscarPedido.get("cantidad").toString());
-            //crea pedido nuevo
-            pedido = new Pedido(idPedid,cantidad); 
+            //se sacan los objetos 
+            JsonObject objetoEstado = (JsonObject) jsonBuscarPedido.get("idEstado");
+            JsonObject objetoLocal = (JsonObject) jsonBuscarPedido.get("idLocal");
+            JsonObject objetoFranquicia = (JsonObject) jsonBuscarPedido.get("idFranquicia");
+            JsonObject objetoCarta = (JsonObject) jsonBuscarPedido.get("idCarta");
+            //declaracion e inicializacion de ids
+            int idEstado = 0;
+            int idLocal = 0;
+            int idFranquicia = 0;
+            int idCarta = 0;
+            //otorgar valor real
+            idEstado = Integer.parseInt(objetoEstado.get("idEstado").toString());
+            idLocal = Integer.parseInt(objetoLocal.get("idLocal").toString());
+            idFranquicia = Integer.parseInt(objetoFranquicia.get("idFranquicia").toString());
+            idCarta = Integer.parseInt(objetoCarta.get("idCarta").toString());
+            //declaracion e inicializacion
+            Estado estado = null;
+            Local local = null;
+            Franquicia franquicia = null;
+            Carta carta = null;
+            //consulta por id
+            estado = EstadoController.buscarEstadoPorId(idEstado);
+            local = LocalController.buscarLocalporCodigo(idLocal);
+            franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
+            carta = CartaController.buscarCartaPorId(idCarta);
+            //añade el pedido al array
+            pedido = new Pedido(idPedid, cantidad, estado, carta, franquicia, local);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar pedido " + e);
         }
@@ -161,26 +191,28 @@ public class PedidoController {
     }
     //Método para modificar solo el estado de un pedido
     public static int modificarEstadoPedido(String nombreEstado, int idPedido) throws Exception{
+        pedido = null;
         //variable que devuelve 1 si el pedido ha sido modificado y 0 si no
         int modificado = 0;
-        //se crea una nueva instancia de EstadoModel
-        EstadoModel estado = null;
+        //se crea una nueva instancia de Estado
+        Estado estadoNuevo = null;
+        Estado estadoAnterior = null;
         //Se busca el estado que se recibe como parametro un nombre de un estado
         //lo busca y devuelve un objeto tipo EstadoModel
-       // estado = EstadoController.buscarEstadoPorNombre(nombreEstado);
+        estadoNuevo = EstadoController.buscarEstadoPorNombre(nombreEstado);
         //Primero se busca para verificar que el pedido existe dentro de la base 
         // de datos
         if(buscarPedidoPorID(idPedido)!=null){
             try{
-                con = new Controlador().conectar();
-                st = con.createStatement();
-                //query para modificar SOLO EL ESTADO del pedido
-                query = "UPDATE pedido " +
-                    " SET idEstado ="+ estado.getIdEstado() +
-                    " WHERE idPedido = " + idPedido;
-                modificado = st.executeUpdate(query);
-            }catch(SQLException sqle){
-                JOptionPane.showMessageDialog(null,"Error al modificar pedido " + sqle);
+                pedido = buscarPedidoPorID(idPedido);
+                estadoAnterior = pedido.getIdEstado();
+                pedido.setIdEstado(estadoNuevo);
+                pedidoRest.edit(pedido, Integer.toString(idPedido));
+                if(estadoAnterior != buscarPedidoPorID(idPedido).getIdEstado()){
+                    modificado = 1;
+                }
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null,"Error al modificar pedido " + e);
             }
         }else{
             // si no existe el pedido dentro de la base de datos se notifica con un msj
@@ -197,4 +229,5 @@ public class PedidoController {
         
         return totalPedidos;
     }
+    
 }

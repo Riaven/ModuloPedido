@@ -111,9 +111,9 @@ public class CartaController {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("ModuloPedidoPU");
             EntityManager em = emf.createEntityManager();
             //se llama a la query
-            TypedQuery<Carta> consultaCarta= em.createNamedQuery("Estado.findByDescripcion", Carta.class);
+            TypedQuery<Carta> consultaCarta= em.createNamedQuery("Carta.findByNombre", Carta.class);
             //se cambia el parámetro para hacer la busqueda
-            consultaCarta.setParameter("descripcion", nombreCarta);
+            consultaCarta.setParameter("nombre", nombreCarta);
             
             List<Carta> lista= consultaCarta.getResultList();
             

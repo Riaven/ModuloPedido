@@ -4,18 +4,9 @@
  * and open the template in the editor.
  */
 package com.ubereats.modulopedido.view;
-
-import com.ubereats.modulopedido.controller.modelcontroller.CartaController;
 import com.ubereats.modulopedido.controller.modelcontroller.PedidoController;
-import com.ubereats.modulopedido.model.PedidoModel;
-
-import com.ubereats.modulopedido.controller.modelcontroller.EstadoController;
-import com.ubereats.modulopedido.controller.modelcontroller.FranquiciaController;
-import com.ubereats.modulopedido.controller.modelcontroller.LocalController;
-import com.ubereats.modulopedido.entities.Franquicia;
 import com.ubereats.modulopedido.entities.Pedido;
 import java.awt.Image;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,15 +44,16 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         llenarJTablePedido(jtPedido);
         //no permite que ninguna de las filas o clumnas de la tabla sea editable por el usuario
         jtPedido.setDefaultEditor(Object.class, null);
+        //agrega las imagenes a los botones
         btnAgregar.setIcon(new ImageIcon(ruta + "icons8-agregar-propiedad-26.png"));
         btnActualizar.setIcon(new ImageIcon(ruta +"icons8-mostrar-propiedad-26.png"));
         btnEliminar.setIcon(new ImageIcon(ruta + "icons8-eliminar-propiedad-26.png"));
         btnModificar.setIcon(new ImageIcon(ruta + "icons8-editar-propiedad-26.png"));
         btnBuscar.setIcon(new ImageIcon(ruta + "icons8-búsqueda-de-propiedad-26.png"));
+        //imagen del logo
         jlLogo.setIcon(new ImageIcon(ruta + "ubereats-logo.png"));
         //contar los pedidos totales que hay
         rellenarLabel(lblContar);
-        System.out.println(CartaController.buscarCartaPorId(2));
        
     }
 
@@ -272,22 +264,22 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         try{
            abrirModificar(id); 
         }catch(Exception e){
-           JOptionPane.showMessageDialog(null , "Error : " + e);
+           JOptionPane.showMessageDialog(null , "Error abrir modificar pedido "+ id +": " + e);
         }
         
     }//GEN-LAST:event_btnModificarActionPerformed
-
+    //////////////////BOTON BUSCAR
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         int idPedido;
         int opcion;
         
-        PedidoModel pedido;
+        Pedido pedido;
         pedido = null;
         try{
             if(!jtxBuscarId.getText().isEmpty()){
                 idPedido = Integer.parseInt(jtxBuscarId.getText());
-               // pedido = PedidoController.buscarPedidoPorID(idPedido);
+                pedido = PedidoController.buscarPedidoPorID(idPedido);
                 if(pedido != null ){
                     opcion =  JOptionPane.showOptionDialog(null, "¿Qué desea hacer con el pedido " + idPedido + '?', 
                                                            "Pedido " + idPedido ,
@@ -410,19 +402,19 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         try{
             
             if(id>0){
-                //PedidoModel p = PedidoController.buscarPedidoPorID(id);
+                Pedido p = PedidoController.buscarPedidoPorID(id);
                 PedidoModificarView modi = new PedidoModificarView();
-                
-               // modi.obtenerPedido(p);
+                //se envia el objeto pedido
+                modi.obtenerPedido(p);
                 modi.setVisible(true);
+                
             }else{
                 JOptionPane.showMessageDialog(null, "No se puede modificar, pedido no seleccionado");
             }
-            
-            
+               
             
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null , "Error al modificar : " + e);
+            JOptionPane.showMessageDialog(null , "Error al modificar "+id+" : " + e);
         }
     }
     
