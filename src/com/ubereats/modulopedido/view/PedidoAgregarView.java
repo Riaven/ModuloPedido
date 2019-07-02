@@ -203,10 +203,20 @@ public class PedidoAgregarView extends javax.swing.JFrame {
             try {
                 if(PedidoController.buscarPedidoPorID(idPedido) == null){
                     //se busca por el nombre del combo seleccionado y se crea un objeto de cada uno
-                    Estado estadito = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString());
-                    Carta cartita = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString());
-                    Franquicia franquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString());
-                    Local localcito = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString());
+                   int idEstado = 0; 
+                   int idLocal = 0;
+                   int idFranquicia = 0;
+                   int idCarta = 0;
+                   //se saca el estado por el nombre
+                   idEstado = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString()).getIdEstado();
+                   idLocal = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString()).getIdLocal();
+                   idFranquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString()).getIdFranquicia();
+                   idCarta = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString()).getIdCarta();
+                   //al parecer al buscarlo por id devuelve un objeto diferente que cuando se busca por un String
+                   Estado estadito = EstadoController.buscarEstadoPorId(idEstado);
+                   Local localcito = LocalController.buscarLocalporCodigo(idLocal);
+                   Franquicia franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
+                   Carta cartita = CartaController.buscarCartaPorId(idCarta);
                     //se llama al metodo agregar pedido y se le otorga el int que devuelve a la variable exito
                     exito = PedidoController.agregarPedido(idPedido, cantidad, estadito, cartita, franquicia, localcito);
                 }else{

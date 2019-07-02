@@ -113,8 +113,9 @@ public class LocalController{
                 telefono = lista.get(i).getTelefono();
                 correo = lista.get(i).getCorreo();
                 horario = lista.get(i).getHorario();
+                local = new Local(idLocal, menu, direccion, telefono, correo, horario);
             }
-            local = new Local(idLocal, menu, direccion, telefono, correo, horario);
+            
             em.close();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar Local" + e);

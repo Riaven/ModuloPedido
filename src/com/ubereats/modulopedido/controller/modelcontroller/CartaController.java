@@ -134,8 +134,9 @@ public class CartaController {
                 descripcion = lista.get(i).getDescripcion();
                 franquicia = lista.get(i).getIdFranquicia();
                 local = lista.get(i).getIdLocal();
+                carta = new Carta(idCa, nombre, descripcion, franquicia, local);
             }
-            carta = new Carta(idCa, nombre, descripcion, franquicia, local);
+            
             em.close();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar Carta" + e);

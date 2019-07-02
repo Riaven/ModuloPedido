@@ -87,30 +87,17 @@ public class PedidoController {
         //try{
             if(buscarPedidoPorID(idPedido)==null){
                 //se crea una instancia de pedido
-                pedido = new Pedido(idPedido, cantidad, estado, carta, franquicia, local);
-                System.out.println("Pedido");
-                System.out.println(pedido.getIdPedido());
-                System.out.println(pedido.getCantidad());
-                System.out.println("Estado");
-                System.out.println(pedido.getIdEstado().getDescripcion());
-                System.out.println(pedido.getIdEstado().getIdEstado());
-                System.out.println("Carta");
-                System.out.println(pedido.getIdCarta().getIdCarta());
-                System.out.println(pedido.getIdCarta().getDescripcion());
-                System.out.println(pedido.getIdCarta().getNombre());
-                System.out.println(pedido.getIdCarta().getIdFranquicia().getIdFranquicia());
-                System.out.println(pedido.getIdCarta().getIdLocal().getMenu());
-                System.out.println("Franquicia");
-                System.out.println(pedido.getIdFranquicia().getNombre());
-                System.out.println(pedido.getIdFranquicia().getIdFranquicia());
-                System.out.println(pedido.getIdFranquicia().getIdLocal().getMenu());
-                 System.out.println("Local");
-                System.out.println(pedido.getIdLocal().getMenu());
-                System.out.println(pedido.getIdLocal().getIdLocal());
-                //prueba=buscarPedidoPorID(1);
-                //prueba.setIdPedido(234);
-                //pedidoRest.create(pedido);
-                //pedidoRest.create(prueba);
+                pedido = new Pedido();
+                pedido.setIdPedido(idPedido);
+                pedido.setCantidad(cantidad);
+                pedido.setIdEstado(estado);
+                pedido.setIdCarta(carta);
+                pedido.setIdFranquicia(franquicia);
+                pedido.setIdLocal(local);
+                //pedido = buscarPedidoPorID(4);
+                //pedido.setIdPedido(idPedido);
+                pedidoRest.create(pedido);
+                
                 if(buscarPedidoPorID(idPedido)!=null){
                     filaAgregada = 1;
                 }

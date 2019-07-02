@@ -111,8 +111,9 @@ public class FranquiciaController {
                 idFranquicia = lista.get(i).getIdFranquicia();
                 nombre = lista.get(i).getNombre();
                 local = lista.get(i).getIdLocal();
+                franquicia = new Franquicia(idFranquicia, nombre, local);
             }
-            franquicia = new Franquicia(idFranquicia, nombre, local);
+            
             em.close();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Error al buscar Franquicia" + e);

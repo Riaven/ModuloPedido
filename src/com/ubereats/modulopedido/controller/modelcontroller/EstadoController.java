@@ -106,8 +106,9 @@ public class EstadoController {
             for(int i = 0; i < lista.size(); i++){
                 desc = lista.get(i).getDescripcion();
                 idEst = lista.get(i).getIdEstado();
+                estado = new Estado(idEst, desc);
             }
-            estado = new Estado(idEst, desc);
+            
             
             em.close();
         }catch(Exception e){
