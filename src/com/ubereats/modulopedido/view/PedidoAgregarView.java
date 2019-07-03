@@ -204,16 +204,15 @@ public class PedidoAgregarView extends javax.swing.JFrame {
     private void btnAgregarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPedidoActionPerformed
         // TODO add your handling code here:
         int exito = 0;
+        String mensaje = null;
         if(jtfCantidad.getText().isEmpty()|| jtfIdPedido.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos");
         }else{
-           
-            //variables que toman lo que recibe el jTextField de id y cantidad
-            int idPedido = Integer.parseInt(jtfIdPedido.getText());
-            int cantidad = Integer.parseInt(jtfCantidad.getText());
-            
-           
+                      
             try {
+                //variables que toman lo que recibe el jTextField de id y cantidad
+                int idPedido = Integer.parseInt(jtfIdPedido.getText());
+                int cantidad = Integer.parseInt(jtfCantidad.getText());
                 if(idPedido <= 0 || cantidad <=0 ){
                     JOptionPane.showMessageDialog(null, "El ID del pedido y/o la cantidad no deben ser iguales o menores a 0");
                 }else{
@@ -249,6 +248,7 @@ public class PedidoAgregarView extends javax.swing.JFrame {
                 
             } catch (Exception ex) {
                 Logger.getLogger(PedidoAgregarView.class.getName()).log(Level.SEVERE, null, ex);
+                mensaje = ex.toString();
             }
         }
         //comprueba que el pedido fuera exitosamente agregado a la bd
@@ -256,7 +256,7 @@ public class PedidoAgregarView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Pedido agregado correctamente");
             dispose();
         }else{
-            JOptionPane.showMessageDialog(null, "No se ha podido agregar el Pedido");
+            JOptionPane.showMessageDialog(null, "No se ha podido agregar el Pedido " + mensaje );
         }
     }//GEN-LAST:event_btnAgregarPedidoActionPerformed
 
@@ -275,14 +275,15 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         if (jtfIdPedido.getText().length()== 10){
             evt.consume();
         }
-
+        
+        
      
     }//GEN-LAST:event_jtfIdPedidoKeyTyped
 
     private void jtfCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadKeyTyped
         // TODO add your handling code here:
         char caracter = evt.getKeyChar();
-
+        
         // Verificar si la tecla pulsada no es un digito
          if(((caracter < '0') ||
             (caracter > '9')) &&
@@ -293,6 +294,8 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         if (jtfCantidad.getText().length()== 10){
             evt.consume();
         }
+        
+        
     }//GEN-LAST:event_jtfCantidadKeyTyped
 
     /**
