@@ -120,6 +120,12 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
             }
         });
 
+        jtxBuscarId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxBuscarIdKeyTyped(evt);
+            }
+        });
+
         jLabel2.setText("Buscar Pedido por Id :");
 
         jtPedido.setModel(new javax.swing.table.DefaultTableModel(
@@ -311,6 +317,21 @@ public class PedidoPrincipalView extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void jtxBuscarIdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxBuscarIdKeyTyped
+        // TODO add your handling code here:
+
+      char caracter = evt.getKeyChar();
+
+      // Verificar si la tecla pulsada no es un digito
+      if(((caracter < '0') ||
+         (caracter > '9')) &&
+         (caracter != '\b' /*corresponde a BACK_SPACE*/))
+      {
+         evt.consume();  // ignorar el evento de teclado
+      }
+   
+    }//GEN-LAST:event_jtxBuscarIdKeyTyped
 
     /**
      * @param args the command line arguments

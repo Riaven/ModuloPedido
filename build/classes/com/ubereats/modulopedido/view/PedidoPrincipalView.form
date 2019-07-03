@@ -153,6 +153,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jtxBuscarId">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtxBuscarIdKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>

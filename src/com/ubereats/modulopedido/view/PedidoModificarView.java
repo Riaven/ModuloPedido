@@ -69,6 +69,12 @@ public class PedidoModificarView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jtfIdPedido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfIdPedidoKeyTyped(evt);
+            }
+        });
+
         jLabel6.setText("IdPedido");
 
         jLabel7.setText("Cantidad");
@@ -91,6 +97,12 @@ public class PedidoModificarView extends javax.swing.JFrame {
         cbxFranquicia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setText("Franquicia");
+
+        jtfCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfCantidadKeyTyped(evt);
+            }
+        });
 
         jButton1.setText("Modificar Pedido");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -218,6 +230,32 @@ public class PedidoModificarView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al encontrar pedido a modificar " + e);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jtfIdPedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfIdPedidoKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+
+      // Verificar si la tecla pulsada no es un digito
+      if(((caracter < '0') ||
+         (caracter > '9')) &&
+         (caracter != '\b' /*corresponde a BACK_SPACE*/))
+      {
+         evt.consume();  // ignorar el evento de teclado
+      }
+    }//GEN-LAST:event_jtfIdPedidoKeyTyped
+
+    private void jtfCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadKeyTyped
+        // TODO add your handling code here:
+        char caracter = evt.getKeyChar();
+
+      // Verificar si la tecla pulsada no es un digito
+      if(((caracter < '0') ||
+         (caracter > '9')) &&
+         (caracter != '\b' /*corresponde a BACK_SPACE*/))
+      {
+         evt.consume();  // ignorar el evento de teclado
+      }
+    }//GEN-LAST:event_jtfCantidadKeyTyped
 
     /**
      * @param args the command line arguments
