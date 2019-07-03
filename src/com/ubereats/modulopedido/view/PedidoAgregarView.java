@@ -207,33 +207,45 @@ public class PedidoAgregarView extends javax.swing.JFrame {
         if(jtfCantidad.getText().isEmpty()|| jtfIdPedido.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Por favor, rellene todos los campos");
         }else{
+           
             //variables que toman lo que recibe el jTextField de id y cantidad
             int idPedido = Integer.parseInt(jtfIdPedido.getText());
             int cantidad = Integer.parseInt(jtfCantidad.getText());
             
            
             try {
-                if(PedidoController.buscarPedidoPorID(idPedido) == null){
-                    //se busca por el nombre del combo seleccionado y se crea un objeto de cada uno
-                   int idEstado = 0; 
-                   int idLocal = 0;
-                   int idFranquicia = 0;
-                   int idCarta = 0;
-                   //se saca el estado por el nombre
-                   idEstado = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString()).getIdEstado();
-                   idLocal = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString()).getIdLocal();
-                   idFranquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString()).getIdFranquicia();
-                   idCarta = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString()).getIdCarta();
-                   //al parecer al buscarlo por id devuelve un objeto diferente que cuando se busca por un String
-                   Estado estadito = EstadoController.buscarEstadoPorId(idEstado);
-                   Local localcito = LocalController.buscarLocalporCodigo(idLocal);
-                   Franquicia franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
-                   Carta cartita = CartaController.buscarCartaPorId(idCarta);
-                    //se llama al metodo agregar pedido y se le otorga el int que devuelve a la variable exito
-                    exito = PedidoController.agregarPedido(idPedido, cantidad, estadito, cartita, franquicia, localcito);
+                if(idPedido <= 0 || cantidad <=0 ){
+                    JOptionPane.showMessageDialog(null, "El ID del pedido y/o la cantidad no deben ser iguales o menores a 0");
                 }else{
-                    JOptionPane.showMessageDialog(null, "Id de pedido existe");
+                    
+                    if(jtfCantidad.getText().toString().length() > 10 || jtfIdPedido.getText().toString().length() > 10){
+                        JOptionPane.showMessageDialog(null, "El ID del pedido y/o la cantidad no deben de tener más de 10 dígitos ");
+                    }else{
+                        if(PedidoController.buscarPedidoPorID(idPedido) == null){
+                            //se busca por el nombre del combo seleccionado y se crea un objeto de cada uno
+                            int idEstado = 0; 
+                            int idLocal = 0;
+                            int idFranquicia = 0;
+                            int idCarta = 0;
+                            //se saca el estado por el nombre
+                            idEstado = EstadoController.buscarEstadoPorNombre(cbxEstado.getSelectedItem().toString()).getIdEstado();
+                             idLocal = LocalController.buscarLocalporMenu(cbxLocal.getSelectedItem().toString()).getIdLocal();
+                            idFranquicia = FranquiciaController.buscarFranquiciaporNombre(cbxFranquicia.getSelectedItem().toString()).getIdFranquicia();
+                            idCarta = CartaController.buscarCartaPorNombre(cbxCarta.getSelectedItem().toString()).getIdCarta();
+                            //al parecer al buscarlo por id devuelve un objeto diferente que cuando se busca por un String
+                            Estado estadito = EstadoController.buscarEstadoPorId(idEstado);
+                            Local localcito = LocalController.buscarLocalporCodigo(idLocal);
+                            Franquicia franquicia = FranquiciaController.buscarFranquiciaporCodigo(idFranquicia);
+                            Carta cartita = CartaController.buscarCartaPorId(idCarta);
+                             //se llama al metodo agregar pedido y se le otorga el int que devuelve a la variable exito
+                            exito = PedidoController.agregarPedido(idPedido, cantidad, estadito, cartita, franquicia, localcito);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Id de pedido existe");
+                        }
+                    }
+                    
                 }
+                
                 
             } catch (Exception ex) {
                 Logger.getLogger(PedidoAgregarView.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,27 +263,36 @@ public class PedidoAgregarView extends javax.swing.JFrame {
     private void jtfIdPedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfIdPedidoKeyTyped
         // TODO add your handling code here:
         char caracter = evt.getKeyChar();
+        
+        
+        // Verificar si la tecla pulsada no es un digito
+        if(((caracter < '0') ||
+            (caracter > '9')) &&
+            (caracter != '\b' /*corresponde a BACK_SPACE*/))
+        {
+            evt.consume();  // ignorar el evento de teclado
+        }
+        if (jtfIdPedido.getText().length()== 10){
+            evt.consume();
+        }
 
-      // Verificar si la tecla pulsada no es un digito
-      if(((caracter < '0') ||
-         (caracter > '9')) &&
-         (caracter != '\b' /*corresponde a BACK_SPACE*/))
-      {
-         evt.consume();  // ignorar el evento de teclado
-      }
+     
     }//GEN-LAST:event_jtfIdPedidoKeyTyped
 
     private void jtfCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadKeyTyped
         // TODO add your handling code here:
         char caracter = evt.getKeyChar();
 
-      // Verificar si la tecla pulsada no es un digito
-      if(((caracter < '0') ||
-         (caracter > '9')) &&
-         (caracter != '\b' /*corresponde a BACK_SPACE*/))
-      {
-         evt.consume();  // ignorar el evento de teclado
-      }
+        // Verificar si la tecla pulsada no es un digito
+         if(((caracter < '0') ||
+            (caracter > '9')) &&
+            (caracter != '\b' /*corresponde a BACK_SPACE*/))
+        {
+            evt.consume();  // ignorar el evento de teclado
+        }
+        if (jtfCantidad.getText().length()== 10){
+            evt.consume();
+        }
     }//GEN-LAST:event_jtfCantidadKeyTyped
 
     /**
