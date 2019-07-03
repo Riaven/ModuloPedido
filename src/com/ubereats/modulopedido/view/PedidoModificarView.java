@@ -215,7 +215,7 @@ public class PedidoModificarView extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Pedido a modificar no encontrado");
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al encontrar pedido a modificar");
+            JOptionPane.showMessageDialog(null, "Error al encontrar pedido a modificar " + e);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

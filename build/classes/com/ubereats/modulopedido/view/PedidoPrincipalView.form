@@ -33,16 +33,19 @@
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                       <Component id="btnBuscar" min="-2" pref="145" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="jSeparator1" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Component id="jScrollPane2" min="-2" pref="565" max="-2" attributes="0"/>
-                          <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnAgregar" min="-2" pref="149" max="-2" attributes="0"/>
-                              <Component id="btnEliminar" min="-2" pref="149" max="-2" attributes="0"/>
-                              <Component id="btnModificar" min="-2" pref="149" max="-2" attributes="0"/>
-                              <Component id="btnActualizar" min="-2" pref="149" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                      <Component id="lblContar" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jSeparator1" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jScrollPane2" min="-2" pref="565" max="-2" attributes="0"/>
+                              <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnAgregar" min="-2" pref="149" max="-2" attributes="0"/>
+                                  <Component id="btnEliminar" min="-2" pref="149" max="-2" attributes="0"/>
+                                  <Component id="btnModificar" min="-2" pref="149" max="-2" attributes="0"/>
+                                  <Component id="btnActualizar" min="-2" pref="149" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -50,18 +53,10 @@
               <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="63" pref="63" max="-2" attributes="0"/>
-                      <Component id="jlLogo" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-                      <Component id="lblContar" min="-2" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <EmptySpace min="63" pref="63" max="-2" attributes="0"/>
+              <Component id="jlLogo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>

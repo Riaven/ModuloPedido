@@ -172,7 +172,7 @@ public class PedidoController {
             //añade el pedido al array
             pedido = new Pedido(idPedid, cantidad, estado, carta, franquicia, local);
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Error al buscar pedido " + e);
+            System.out.println("Error al buscar pedido " + e);
         }
         return pedido;
     }
